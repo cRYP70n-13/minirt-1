@@ -8,9 +8,9 @@ typedef struct s_vect3f t_vect3f;
 
 struct s_vect3f
 {
-    float x;
-    float y;
-    float z;
+	float x;
+	float y;
+	float z;
 };
 
 t_vect3f vec3f (float x, float z, float w);
