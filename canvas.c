@@ -1,4 +1,4 @@
-#include "canvas.h"
+#include "./canvas.h"
 
 int create_trgb(int t, int r, int g, int b)
 {
