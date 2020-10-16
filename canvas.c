@@ -52,12 +52,15 @@ t_canvas *canvas_create(int w, int h, t_trgb bg)
     int i;
 
     i = 0;
-    A = malloc(sizeof(struct s_canvas));
+    if (!(A = malloc(sizeof(struct s_canvas))))
+        return NULL;
     A->w = w;
     A->h = h;
     A->bg = bg;
-    A->data = malloc(sizeof(int) * w * h);
-    A->pixel = malloc (A->h * sizeof(int*));
+    if (!(A->data = malloc(sizeof(int) * w * h)))
+        return NULL;
+    if (!(A->pixel = malloc (A->h * sizeof(int*))))
+        return NULL;
     while (i < A->h)
     {
         A->pixel[i] = A->data + A->w * i;
