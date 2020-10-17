@@ -2,6 +2,8 @@
 # define RAY_h
 
 # include "../vec3f.h"
+# include <stdlib.h>
+# include <stdio.h>
 
 /*
 *  The structure definition of the ray
@@ -15,9 +17,9 @@
 * */
 typedef struct s_ray {
 	double t;
-	t_vect3f result_ray; // params (x, y, z) P = A + tB
-	t_vect3f direction; // params (x, y, z)
-	t_vect3f origin; // params (x, y, z)
+	t_vect3f *result_ray; // params (x, y, z) P = A + tB
+	t_vect3f *direction; // params (x, y, z)
+	t_vect3f *origin; // params (x, y, z)
 } t_ray;
 
 t_ray *ray(t_vect3f *origin, t_vect3f *direction); // The ray constructor
