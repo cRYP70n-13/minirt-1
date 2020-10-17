@@ -24,8 +24,8 @@ typedef struct s_ray {
 
 t_ray *ray(t_vect3f *origin, t_vect3f *direction); // The ray constructor
 void ray_destroy(t_ray *ray); // Free
-t_vect3f *origin(s_ray *ray); // => returns Origin
-t_vect3f *direction(s_ray *ray); // => returns the direction of the ray
-t_vect3f at(double t, t_vect3f *origin, t_vect3f *direction); // returns orig + t * direction
+t_vect3f *origin(t_ray *ray); // => returns Origin
+t_vect3f *direction(t_ray *ray); // => returns the direction of the ray
+t_vect3f *at(double t, t_vect3f *origin, t_vect3f *direction); // returns orig + t * direction
 
 #endif

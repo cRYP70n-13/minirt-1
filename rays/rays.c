@@ -47,5 +47,5 @@ t_vect3f	*direction(t_ray *ray)
 t_vect3f	*at(double t, t_vect3f *origin, t_vect3f *direction)
 {
 	// TODO: correct this shit
-	return origin + (direction * t);
+	return vec3f_add(origin, vec3f_multi(direction, t));
 }
