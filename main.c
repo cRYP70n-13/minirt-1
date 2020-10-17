@@ -23,7 +23,7 @@ int main()
 		j = 0;
 		while (j < 1000)
 		{
-			write_pixel (c, j, i, create_trgb(0, 255.999 * (i/1000.0), 255.99 * (j/1000.0), 0));
+			set_pixel(c, j, i, create_pixel(0, 255.999 * (i/1000.0), 255.99 * (j/1000.0), 0));
 			j++;
 		}
 		i++;
