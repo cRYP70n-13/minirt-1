@@ -1,1 +1,2 @@
-# minirt
+# MINIRT (Raytracing in C)
+
