@@ -60,4 +60,5 @@ float vec3f_dotproduct(t_vect3f *v1, t_vect3f *v2);
 */
 t_vect3f *vec3f_crossproduct(t_vect3f *v1, t_vect3f *v2);
 
+void vec3f_copy (t_vect3f *src, t_vect3f *dst);
 #endif
