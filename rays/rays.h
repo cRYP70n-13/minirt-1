@@ -1,7 +1,7 @@
 #ifndef RAY_H
 # define RAY_h
 
-# include "../vec3f.h"
+# include "../vec3f/vec3f.h"
 # include <stdlib.h>
 # include <stdio.h>
 
