@@ -14,10 +14,10 @@
 * t ==> is the ray parameter (Real Number double)
 * */
 struct s_ray {
-    double t;
-    double P;
-    double A;
-    double B;
+	double t;
+	double P;
+	double A;
+	double B;
 };
 
 #endif
