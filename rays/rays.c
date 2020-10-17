@@ -9,6 +9,11 @@
 t_ray	*ray(t_vect3f *origin, t_vect3f *direction)
 {
 	// TODO: Implement the ray constructor
+	t_ray *r;
+
+	r = malloc (sizeof(struct s_ray));
+	r->origin.x = origin.x;
+	r->origin.y = origin.y;
 }
 
 /**
@@ -22,6 +27,7 @@ void	ray_destroy(t_ray *ray)
 	free(ray->result_ray);
 	free(ray);
 }
+
 
 /**
  * @description => Return the oerigin of our ray

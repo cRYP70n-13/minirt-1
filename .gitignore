@@ -1,2 +1,4 @@
 .vscode
 .DS_store
+test.c
+a.out

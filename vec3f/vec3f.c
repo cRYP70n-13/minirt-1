@@ -1,5 +1,6 @@
 #include "vec3f.h"
 #include "stdio.h"
+#include <stdlib.h>
 #include <math.h>
 
 t_vect3f *vec3f(float x, float y, float z)
