@@ -8,7 +8,13 @@
 **/
 t_ray	*ray(t_vect3f *origin, t_vect3f *direction)
 {
-	// TODO: Implement the ray constructor
+	t_ray *r;
+
+	r = malloc (sizeof(struct s_ray));
+	r->origin->x = origin->x;
+	r->origin->y = origin->y;
+	r->origin->z = origin->z;
+	return (r);
 }
 
 /**
@@ -22,6 +28,7 @@ void	ray_destroy(t_ray *ray)
 	free(ray->result_ray);
 	free(ray);
 }
+
 
 /**
  * @description => Return the oerigin of our ray
@@ -43,9 +50,13 @@ t_vect3f	*direction(t_ray *ray)
 	return ray->direction;
 }
 
-// Still have a damn error here
 t_vect3f	*at(double t, t_vect3f *origin, t_vect3f *direction)
 {
-	// TODO: correct this shit
-	return vec3f_add(origin, vec3f_multi(direction, t));
+	t_vect3f *result;
+	t_vect3f *tmp;
+
+	tmp = vec3f_multi (direction, t);
+	result = vec3f_add (origin, tmp);
+	free(tmp);
+	return (result);
 }
