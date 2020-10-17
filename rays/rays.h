@@ -13,11 +13,17 @@
 * B ==> Is the ray direction
 * t ==> is the ray parameter (Real Number double)
 * */
-struct s_ray {
+typedef struct s_ray {
 	double t;
-	double P;
-	double A;
-	double B;
-};
+	t_vect3f result_ray; // params (x, y, z) P = A + tB
+	t_vect3f direction; // params (x, y, z)
+	t_vect3f origin; // params (x, y, z)
+} t_ray;
+
+t_ray *ray(t_vect3f *origin, t_vect3f *direction); // The ray constructor
+void ray_destroy(t_ray *ray); // Free
+t_vect3f *origin(s_ray *ray); // => returns Origin
+t_vect3f *direction(s_ray *ray); // => returns the direction of the ray
+t_vect3f at(double t, t_vect3f *origin, t_vect3f *direction); // returns orig + t * direction
 
 #endif
