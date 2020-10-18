@@ -33,4 +33,5 @@ t_trgb  image_make_color(t_imgcmp t, t_imgcmp r, t_imgcmp g, t_imgcmp b);
 void  canvas_fill (t_canvas *A, t_trgb bg);
 t_trgb  canvas_get (t_canvas *A, int x, int y);
 void  set_pixel (t_canvas *A, int x, int y, t_trgb value);
+
 #endif
