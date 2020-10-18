@@ -14,11 +14,11 @@ typedef unsigned int t_trgb;
 typedef struct s_canvas t_canvas;
 
 struct s_canvas {
-  int w;
-  int h;
-  t_trgb bg;
-  t_trgb *data;
-  t_trgb **pixel;
+	int w;
+	int h;
+	t_trgb bg;
+	t_trgb *data;
+	t_trgb **pixel;
 };
 
 
