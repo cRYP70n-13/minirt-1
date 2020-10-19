@@ -11,10 +11,10 @@ typedef struct s_vect3f *t_vect3f;
 typedef struct s_vect3f t_s_vect3f;
 
 
-#define VECTOR  0;
-#define POINT 1;
-#define HEAP 0;
-#define STACK 1;
+#define VECTOR  0
+#define POINT 1
+#define HEAP 0
+#define STACK 1
 
 struct s_vect3f
 {
