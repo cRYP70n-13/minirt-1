@@ -6,11 +6,15 @@
 */
 typedef struct s_vect3f t_vect3f;
 
+#define VECTOR = 0;
+#define POINT = 1;
+
 struct s_vect3f
 {
 	float x;
 	float y;
 	float z;
+	char is_point_or_vector;
 };
 
 t_vect3f *vec3f(float x, float z, float w);
