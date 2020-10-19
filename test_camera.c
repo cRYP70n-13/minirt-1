@@ -23,6 +23,7 @@ t_trgb ray_color(t_ray *r)
     return ((1.0 - t) * create_pixel_medium(0, 1, 1, 1) + t * create_pixel_medium(0, 0.5, 0.7, 1.0));
 }
 
+
 t_trgb ray_color_fr(t_ray *r)
 {
     t_s_vect3f unit_direction;
@@ -30,6 +31,10 @@ t_trgb ray_color_fr(t_ray *r)
     unit_direction = s_vec3f_norm(*(r->direction));
     t = (unit_direction.y);
     // printf("%f\n", t);
+
+    t_s_vect3f a;
+    t_s_vect3f b;
+    a = s_vect3f (255, 255, 255, 0);
     return ((1.0 - t) * create_pixel(0, 255, 255, 255) + t * create_pixel(0, 255, 0, 0));
 }
 
