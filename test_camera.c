@@ -19,8 +19,18 @@ t_trgb ray_color(t_ray *r)
     float t;
     unit_direction = s_vec3f_norm(*(r->direction));
     t = 0.5 * (unit_direction.y + 1);
-
+    //printf("%f |||| %f\n", t, create_pixel(0, 1, 1, 1) * (1.0 - t));
     return ((1.0 - t) * create_pixel_medium(0, 1, 1, 1) + t * create_pixel_medium(0, 0.5, 0.7, 1.0));
+}
+
+t_trgb ray_color_fr(t_ray *r)
+{
+    t_s_vect3f unit_direction;
+    float t;
+    unit_direction = s_vec3f_norm(*(r->direction));
+    t = (unit_direction.y);
+    // printf("%f\n", t);
+    return ((1.0 - t) * create_pixel(0, 255, 255, 255) + t * create_pixel(0, 255, 0, 0));
 }
 
 int increament_j(void)
@@ -37,8 +47,8 @@ int main(void)
 
     //image
     float aspect_ratio = 16.0 / 9.0;
-    float image_width = 2000;
-    float image_height = image_width / aspect_ratio;
+    int image_width = 250;
+    int image_height = (int)image_width / aspect_ratio;
 
     //camera (eye) / screen
 
@@ -74,17 +84,37 @@ int main(void)
             dir = s_vec3f_add(dir, s_vec3f_multi(vertical, v));
             dir = s_vec3f_sub(dir, origin);
             t_ray *r = ray(&origin, &dir);
-            t_trgb pixel_color = ray_color(r);
+            t_trgb pixel_color = ray_color_fr(r);
             //mlx_pixel_put(mlx_ptr, mlx_window, i, j_opp, pixel_color);
-            mlx_pixel_put(mlx_ptr, mlx_window, i, j_opp, pixel_color);
-
+            //mlx_pixel_put(mlx_ptr, mlx_window, i, j_opp, create_pixel(0, 0, 0, 0));
+            printf("\n%f\n", s_vec3f_norm (*r->direction).y);
             ray_destroy(r);
             i++;
         }
         j_opp = increament_j();
         j--;
     }
-    mlx_loop(mlx_ptr);
+
+    /*
+    for (int j = image_height - 1; j >= 0; --j)
+    {
+        for (int i = 0; i < image_width; ++i)
+        {
+            t_s_vect3f dir;
+            u = (float)i / (image_width - 1);
+            v = (float)j / (image_height  - 1);
+            dir = s_vec3f_add(lower_left_corner, s_vec3f_multi(horizontal, u));
+            dir = s_vec3f_add(dir, s_vec3f_multi(vertical, v));
+            dir = s_vec3f_sub(dir, origin);
+            t_ray *r = ray(&origin, &dir);
+            t_trgb pixel_color = ray_color(r);
+            mlx_pixel_put(mlx_ptr, mlx_window, i, j_opp, create_pixel (0, 0, 0, 255));
+            printf ("\n %d %d \n", j, i);
+            ray_destroy (r);
+        }
+    }
+    */
+    //mlx_loop(mlx_ptr);
     mlx_destroy_window(mlx_ptr, mlx_window);
 
     return (0);
