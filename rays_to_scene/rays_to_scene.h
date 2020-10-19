@@ -8,6 +8,7 @@ typedef struct s_sphere {
     float radius;
 }   t_sphere;
 
+// The header of our functions
 bool ray_intersect(const t_vect3f *origin, const float radius); // Return true if the ray intersect with our sphere else false
 
 // NOTE:: the sphere equation in the vector form = (P - C) . (P - C) = r^2
