@@ -6,14 +6,13 @@
 *	@param => Ray's direction (P = A + tB) {b :: Direc}
 *	@return => pointer to the constructed ray
 **/
-t_ray	*ray(t_vect3f *origin, t_vect3f *direction)
+t_ray	*ray(t_vect3f origin, t_vect3f direction)
 {
 	t_ray *r;
 
 	r = malloc (sizeof(struct s_ray));
-	r->origin->x = origin->x;
-	r->origin->y = origin->y;
-	r->origin->z = origin->z;
+	vec3f_copy (origin, r->origin);
+	vec3f_copy (direction, r->direction);
 	return (r);
 }
 
@@ -35,7 +34,7 @@ void	ray_destroy(t_ray *ray)
  * @param => Pointer to ray struct
  * @returns => ray origin
  * **/
-t_vect3f	*origin(t_ray *ray)
+t_vect3f	origin(t_ray *ray)
 {
 	return ray->origin;
 }
@@ -45,15 +44,15 @@ t_vect3f	*origin(t_ray *ray)
  * @param => Pointer to ray struct
  * @returns => ray direction
  * **/
-t_vect3f	*direction(t_ray *ray)
+t_vect3f	direction(t_ray *ray)
 {
 	return ray->direction;
 }
 
-t_vect3f	*at(double t, t_vect3f *origin, t_vect3f *direction)
+t_vect3f	at(double t, t_vect3f origin, t_vect3f direction)
 {
-	t_vect3f *result;
-	t_vect3f *tmp;
+	t_vect3f result;
+	t_vect3f tmp;
 
 	tmp = vec3f_multi (direction, t);
 	result = vec3f_add (origin, tmp);
