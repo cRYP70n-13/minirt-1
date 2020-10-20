@@ -1,5 +1,5 @@
 #ifndef RAY_H
-# define RAY_h
+# define RAY_H
 
 # include "../vec3f/vec3f.h"
 # include <stdlib.h>
@@ -15,17 +15,20 @@
 * B ==> Is the ray direction
 * t ==> is the ray parameter (Real Number double)
 * */
-typedef struct s_ray {
-	double t;
-	t_vect3f *result_ray; // params (x, y, z) P = A + tB
-	t_vect3f *direction; // params (x, y, z)
-	t_vect3f *origin; // params (x, y, z)
-} t_ray;
 
-t_ray *ray(t_vect3f *origin, t_vect3f *direction); // The ray constructor
+typedef struct s_ray t_ray;
+
+ struct s_ray {
+	double t;
+	t_vect3f result_ray; // params (x, y, z) P = A + tB
+	t_vect3f direction; // params (x, y, z)
+	t_vect3f origin; // params (x, y, z)
+};
+
+t_ray *ray(t_vect3f origin, t_vect3f direction); // The ray constructor
 void ray_destroy(t_ray *ray); // Free
-t_vect3f *origin(t_ray *ray); // => returns Origin
-t_vect3f *direction(t_ray *ray); // => returns the direction of the ray
-t_vect3f *at(double t, t_vect3f *origin, t_vect3f *direction); // returns orig + t * direction
+t_vect3f origin(t_ray *ray); // => returns Origin
+t_vect3f direction(t_ray *ray); // => returns the direction of the ray
+t_vect3f at(double t, t_vect3f origin, t_vect3f direction); // returns orig + t * direction
 
 #endif

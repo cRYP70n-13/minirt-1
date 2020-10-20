@@ -116,3 +116,4 @@ void	set_pixel(t_canvas *A, int x, int y, t_trgb value)
 {
 	A->pixel[y][x] = value;
 }
+
