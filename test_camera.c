@@ -19,7 +19,6 @@ t_trgb ray_color(t_ray *r)
     float t;
     unit_direction = s_vec3f_norm(*(r->direction));
     t = 0.5 * (unit_direction.y + 1);
-    //printf("%f |||| %f\n", t, create_pixel(0, 1, 1, 1) * (1.0 - t));
     return ((1.0 - t) * create_pixel_medium(0, 1, 1, 1) + t * create_pixel_medium(0, 0.5, 0.7, 1.0));
 }
 
@@ -38,6 +37,7 @@ t_trgb ray_color_fr(t_ray *r)
     return ((1.0 - t) * create_pixel(0, 255, 255, 255) + t * create_pixel(0, 255, 0, 0));
 }
 
+
 int increament_j(void)
 {
     static int j;
@@ -46,6 +46,8 @@ int increament_j(void)
     r = j;
     return (j);
 }
+
+
 
 int main(void)
 {
