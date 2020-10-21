@@ -81,6 +81,9 @@ t_vect3f vec3f_crossproduct(t_vect3f v1, t_vect3f v2);
 
 void vec3f_copy (t_vect3f src, t_vect3f dst);
 
+// Copy the cordinate of this vector to a new created one
+t_vect3f    *cpy_vector(t_vect3f *vector);
+
 /*
 ** |||||||||||||||||||||||||||||||||||||||||||||||||
 ** ||                                             ||

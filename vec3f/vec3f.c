@@ -16,7 +16,7 @@ t_vect3f vec3f(float x, float y, float z, char is_point_or_vector)
     return (v);
 }
 
-void vec3f_destroy (t_vect3f vec)
+void vec3f_destroy(t_vect3f vec)
 {
     free (vec);
 }
@@ -124,4 +124,10 @@ void vec3f_copy (t_vect3f src, t_vect3f dst)
     dst->z = src->z;
     dst->al_in_heap_or_stack = src->al_in_heap_or_stack;
     dst->is_point_or_vector = src->is_point_or_vector;
+}
+
+t_vect3f		*cpy_vector(t_vect3f *vector)
+{
+	return (vec3f(vector->x, vector->y, vector->z));
+    // I still need khalil to know WTF is going on with the extra param in creating our vectors
 }
