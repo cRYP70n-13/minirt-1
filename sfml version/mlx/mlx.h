@@ -16,8 +16,8 @@ struct _mlx
     sf::Image image;
     sf::Sprite sprite;
 };
+mlx_window mlx_window_init (unsigned int width, unsigned int height, sf::String title, sf::Color color);
 
-mlx_window mlx_window_init (unsigned int width, unsigned int height, sf::Color color);
-void mlx_window_update ()
-
+void mlx_update (mlx_window *m);
+void mlx_delete (mlx_window *mlx);
 #endif
