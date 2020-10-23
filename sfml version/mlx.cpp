@@ -1,4 +1,4 @@
-#include "mlx.h"
+include "mlx.h"
 
 mlx_window mlx_window_init (unsigned int width, unsigned int height, sf::String title, sf::Color color)
 {
