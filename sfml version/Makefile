@@ -1,16 +1,18 @@
 CC = g++
 LOPTS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 COPTS = -c
-OBJS = main.o
+OBJS = test_camera.o mlx.o
 
-NAME = main
+NAME = test_camera
 all:$(NAME)
 $(NAME) : $(OBJS)
-	$(CC) $(OBJS) -o main $(LOPTS)
+	$(CC) $(OBJS) -o test_camera $(LOPTS)
 
-main.o : main.cpp
-	$(CC) $(COPTS) main.cpp
+test_camera.o : test_camera.cpp mlx.o
+	$(CC) $(COPTS) test_camera.cpp
 
+mlx.o : mlx/mlx.cpp mlx/mlx.h
+	$(CC) $(COPTS) mlx/mlx.cpp
 
 
 
