@@ -1,5 +1,10 @@
 #include "sphere.h"
 
+/**
+ * @brief -> Create a new sphere in the heap with the following cordiantes
+ * @params -> The radius(floa) of the sphere and center(vect3f)
+ * @return -> A pointer to the sphere
+**/
 t_sphere    *new_sphere(float radius, t_vect3f *color, t_vect3f center)
 {
     t_sphere    *sphere;
@@ -12,6 +17,11 @@ t_sphere    *new_sphere(float radius, t_vect3f *color, t_vect3f center)
     return (sphere);
 }
 
+/**
+ * @brief -> Freeing the allocated sphere to avoid leaks
+ * @params -> A pointer to the sphere
+ * @return -> VOID
+**/
 void    destroy_sphere(t_sphere *sphere)
 {
     free(sphere->center);
@@ -19,6 +29,12 @@ void    destroy_sphere(t_sphere *sphere)
     free(sphere);
 }
 
+/**
+ * @brief -> Creates a new sphere and copy the cordinates of the first
+             to the second one
+ * @params -> A pointer to the original sphere
+ * @return -> Pointer to the new created sphere
+ **/
 t_sphere    *cpy_sphere(t_sphere *sphere)
 {
     t_sphere    *new_sphere;

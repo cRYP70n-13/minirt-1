@@ -84,6 +84,7 @@ t_canvas	*canvas_create(int w, int h, t_trgb bg)
 	return (A);
 }
 
+// I think we can just remove this hole function it does nothing
 t_canvas	*canvas(int w, int h)
 {
 	return (canvas_create(w, h, 0));
