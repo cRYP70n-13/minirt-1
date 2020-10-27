@@ -117,3 +117,20 @@ void	set_pixel(t_canvas *A, int x, int y, t_trgb value)
 	A->pixel[y][x] = value;
 }
 
+t_image *mlx_create_image (void *mlx_ptr, int width, int height)
+{
+	t_image *img;
+
+	if ((img = malloc (sizeof (struct s_image))) == NULL)
+		return NULL;
+	img->mlx_img = mlx_new_image (mlx_ptr, width, height);
+	img->data = mlx_get_data_addr (img->mlx_img, img->bits_per_pixel, img->size_line, img->endian);
+	return (img);
+}
+
+/*
+void img_set_pixel (void *img_ptr, int x, int y)
+{
+	mlx_get_data_addr (img_ptr, )
+}
+*/

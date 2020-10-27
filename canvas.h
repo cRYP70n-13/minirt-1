@@ -4,6 +4,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 
+# include "mlx.h"
+
 
 /*
 ** A CANVAS IS JUST A 2D ARRAY THAT STORES A PIXEL IN EVERY ELEMENT
@@ -33,4 +35,22 @@ t_trgb  image_make_color(t_imgcmp t, t_imgcmp r, t_imgcmp g, t_imgcmp b);
 void  canvas_fill (t_canvas *A, t_trgb bg);
 t_trgb  canvas_get (t_canvas *A, int x, int y);
 void  set_pixel (t_canvas *A, int x, int y, t_trgb value);
+
+typedef struct s_image t_image;
+
+struct s_image {
+  void *mlx_img;
+  char *data;
+  int bits_per_pixel;
+  int size_line;
+  int endian;
+};
+
+/*
+** using an mlx image as a canvas
+*/
+t_image *mlx_create_image (void *mlx_ptr, int width, int height);
+void img_set_pixel (void *img_ptr, int x, int y);
+
+
 #endif
