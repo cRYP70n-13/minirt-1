@@ -2,8 +2,7 @@
 #include "rays/rays.h"
 #include "vec3f/vec3f.h"
 #include "mlx.h"
-#include "canvas.h"
-
+#include "image/image.h"
 t_trgb create_pixel_medium(float tf, float rf, float gf, float bf)
 {
     int t = 255 * tf;
@@ -59,8 +58,10 @@ int main(void)
     float u;
     float v;
     void *mlx_ptr = mlx_init();
-    void *mlx_img = mlx_new_image (mlx_ptr, image_width, image_height);
+    
     void *mlx_window = mlx_new_window(mlx_ptr, image_width, image_height, "first camera");
+    t_image *img =  mlx_create_img (mlx_ptr, image_width, image_height);
+    //img_set_pixel (img, 0, 0, create_pixel(0, 255, 255, 255));
     while (j >= 0)
     {
         i = 0;
@@ -74,35 +75,18 @@ int main(void)
             dir = s_vec3f_sub(dir, origin);
             t_ray *r = ray(&origin, &dir);
             t_s_vect3f pixel_color = ray_color(r);
-            mlx_pixel_put(mlx_ptr, mlx_window, i, j_inc, create_pixel(0, pixel_color.x * 255, pixel_color.y * 255, pixel_color.z * 255));
+            //mlx_pixel_put(mlx_ptr, mlx_window, i, j_inc, create_pixel(0, pixel_color.x * 255, pixel_color.y * 255, pixel_color.z * 255));
+            img_set_pixel (img, i, j, create_pixel(0, pixel_color.x * 255, pixel_color.y * 255, pixel_color.z * 255));
             ray_destroy(r);
             i++;
         }
         j_inc++;
         j--;
     }
-
-    /*
-    for (int j = image_height - 1; j >= 0; --j)
-    {
-        for (int i = 0; i < image_width; ++i)
-        {
-            t_s_vect3f dir;
-            u = (float)i / (image_width - 1);
-            v = (float)j / (image_height  - 1);
-            dir = s_vec3f_add(lower_left_corner, s_vec3f_multi(horizontal, u));
-            dir = s_vec3f_add(dir, s_vec3f_multi(vertical, v));
-            dir = s_vec3f_sub(dir, origin);
-            t_ray *r = ray(&origin, &dir);
-            t_trgb pixel_color = ray_color(r);
-            mlx_pixel_put(mlx_ptr, mlx_window, i, j_opp, create_pixel (0, 0, 0, 255));
-            ray_destroy (r);
-        }
-    }
-    */
+    mlx_put_image_to_window (mlx_ptr, mlx_window, img->mlx_img, 0, 0);
     mlx_loop(mlx_ptr);
     mlx_destroy_window(mlx_ptr, mlx_window);
-    mlx_destroy_image (mlx_ptr, mlx_img);
+   mlx_img_destroy (img);
 
     return (0);
 }
