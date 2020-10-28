@@ -1,2 +1,0 @@
-# MINIRT (Raytracing in C)
-
