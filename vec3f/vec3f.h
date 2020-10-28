@@ -93,7 +93,7 @@ void vec3f_copy (t_vect3f src, t_vect3f dst);
 **	vec3f constructors in stack
 */ 
 
-t_s_vect3f s_vec3f(float x, float y, float z, char is_point_or_vector);
+t_s_vect3f s_vec3f(float x, float y, float z);
 
 /*
 ** adding two 3 elements vectors
@@ -140,6 +140,6 @@ float s_vec3f_dotproduct(t_s_vect3f v1, t_s_vect3f v2);
 */
 t_s_vect3f s_vec3f_crossproduct(t_s_vect3f v1, t_s_vect3f v2);
 
-void s_vec3f_copy (t_s_vect3f src, t_s_vect3f dst);
+void s_vec3f_copy (t_s_vect3f *src, t_s_vect3f *dst);
 
 #endif
