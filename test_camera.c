@@ -22,7 +22,7 @@ t_s_vect3f ray_color(t_ray *r)
 
     unit_direction = s_vec3f_norm(*(r->direction));
     t = 0.5 * (unit_direction.y + 1);
-    result = s_vec3f_add(s_vec3f_multi(s_vec3f(1, 1, 1, VECTOR), (1.0 - t)), s_vec3f_multi(s_vec3f(0.5, 0.7, 1.0, VECTOR), t));
+    result = s_vec3f_add(s_vec3f_multi(s_vec3f(1, 1, 1), (1.0 - t)), s_vec3f_multi(s_vec3f(0.5, 0.7, 1.0, VECTOR), t));
     return (result);
 }
 

@@ -1,22 +1,39 @@
 #ifndef HITTABLE_H
-#define HITTABLE_H
+# define HITTABLE_H
 
-#include "rays/rays.h"
-#include "vec3f/vec3f.h"
+# include "rays/rays.h"
+# include "vec3f/vec3f.h"
 
-#define bool char
-#define TRUE 1
-#define FALSE 0
+# define bool char
+# define TRUE 1
+# define FALSE 0
 
-typedef struct s_hit_record t_hit_record;
+
 typedef bool (*t_hit) (void *shape, t_ray *r, float t_min, float t_max, t_hit_record *rec);
 
+typedef struct s_hit_record t_hit_record;
 struct s_hit_record
 {
     t_s_vect3f p; //point
     t_s_vect3f normal;
     float t;
     bool front_face;
+};
+
+
+# define SPHERE 0
+# define PLANE 1
+# define SQUARE 2
+# define CYLINDER 3
+# define TRIANGLE 4
+
+typedef struct s_hittable t_hittable;
+
+struct s_hittable
+{
+    t_hit hit;
+    void *shape;
+    int type_of_shape;
 };
 
 typedef struct s_quadatric_equat_sol t_quadatric_equat_sol;
