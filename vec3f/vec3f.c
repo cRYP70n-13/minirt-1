@@ -5,7 +5,7 @@
 t_vect3f vec3f(float x, float y, float z, char is_point_or_vector)
 {
     t_vect3f v;
-    
+
     v = malloc (sizeof(struct s_vect3f));
     v->x = x;
     v->y = y;
@@ -48,7 +48,7 @@ t_vect3f vec3f_neg(t_vect3f v)
 {
     t_vect3f neg;
 
-    neg = vec3f (0,0, 0, v->is_point_or_vector);    
+    neg = vec3f (0,0, 0, v->is_point_or_vector);
     neg->x = v->x * -1;
     neg->y = v->y * -1;
     neg->z = v->z * -1;
