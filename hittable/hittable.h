@@ -9,6 +9,7 @@
 #define FALSE 0
 
 typedef struct s_hit_record t_hit_record;
+typedef bool (*t_hit) (void *shape, t_ray *r, float t_min, float t_max, t_hit_record *rec);
 
 struct s_hit_record
 {

@@ -6,6 +6,7 @@ t_sphere sphere (t_s_vect3f cen, float r)
 
 	s_vec3f_copy(&cen, &s.center);
 	s.radius = r;
+	s.hit = sphere_hit;
 }
 
 
@@ -30,10 +31,12 @@ t_quadatric_equat_sol solve_quadatric(t_ray *r, t_sphere *s)
 	return (sol);
 }
 
-bool sphere_hit (t_sphere sph, t_ray *r, float t_min, float t_max, t_hit_record *rec)
+bool sphere_hit (void *shape, t_ray *r, float t_min, float t_max, t_hit_record *rec)
 {
+
 	t_quadatric_equat_sol sol;
 	t_s_vect3f outward_normal;
+	t_sphere sph = *(t_sphere *)shape;
 	
 	sol = solve_quadatric (r, &sph);
 	if (sol.discriminant > 0)
@@ -46,7 +49,6 @@ bool sphere_hit (t_sphere sph, t_ray *r, float t_min, float t_max, t_hit_record 
 			set_face_normal (r, outward_normal, rec);
 			return (TRUE);
 		}
-
 		if (sol.root2 < t_max && sol.root2 > t_min)
 		{
 			rec->t = sol.root2;
@@ -56,7 +58,6 @@ bool sphere_hit (t_sphere sph, t_ray *r, float t_min, float t_max, t_hit_record 
 			return (TRUE);
 		}
 	}
-
 	return (FALSE);
 
 }
