@@ -7,6 +7,7 @@ t_sphere sphere (t_s_vect3f cen, float r)
 	s_vec3f_copy(&cen, &s.center);
 	s.radius = r;
 	s.hit = sphere_hit;
+	return (s);
 }
 
 

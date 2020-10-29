@@ -29,6 +29,7 @@ t_s_vect3f ray_color(t_ray *r)
     return (result);
 }
 
+
 int main(void)
 {
 
@@ -46,9 +47,7 @@ int main(void)
     t_hittable shape1 = hittable (sphere_hit, &sp1, SPHERE);
     t_sphere sp2 = sphere(s_vec3f (0, 0, 0), 0.5);
     t_hittable shape2 = hittable (sphere_hit, &sp1, SPHERE);
-    world->add(world, &shape1);
-    world->add(world, &shape2);
-
+    hittable_add (world, &shape1);
     //camera (eye) / screen
 
     float viewport_height = 2.0;
@@ -61,6 +60,8 @@ int main(void)
     t_s_vect3f lower_left_corner = s_vec3f_sub(origin, s_vec3f_div(horizontal, 2));
     lower_left_corner = s_vec3f_sub(lower_left_corner, s_vec3f_div(vertical, 2));
     lower_left_corner = s_vec3f_sub(lower_left_corner, s_vec3f(0, 0, focal_length));
+
+
 
 /*
     // RENDER

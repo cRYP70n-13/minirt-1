@@ -1,5 +1,5 @@
 #ifndef HITTABLE_H
-# define HITTABLE_H
+#define HITTABLE_H
 
 # include "../rays/rays.h"
 # include "../vec3f/vec3f.h"
@@ -19,7 +19,7 @@ struct s_hit_record
     bool front_face;
 };
 
-//typedef bool (*t_hit) (void *self, t_ray *r, float tmin, float tmax, t_hit_record *rec);
+typedef bool (*t_hit) (void *self, t_ray *r, float tmin, float tmax, t_hit_record *rec);
 
 void hit_record_copy (t_hit_record *r1, t_hit_record *r2);
 
