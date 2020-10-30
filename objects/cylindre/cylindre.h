@@ -9,9 +9,6 @@ typedef struct s_cylindre {
 	float height;
 	float radius;
 	t_vect3f	*color;
-
-	// Still needs a lot of shit to do here 😩
-	t_vect3f    *color;
 }               t_cylindre;
 
 t_cylindre      *new_cylindre(t_vect3f *center, float radius, float height, t_vect3f *color);
