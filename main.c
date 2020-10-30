@@ -16,7 +16,7 @@ t_trgb create_pixel_medium(float tf, float rf, float gf, float bf)
 }
 
 
-t_s_vect3f ray_color(t_ray *r)
+t_s_vect3f ray_color(t_ray *r, t_hittable *world)
 {
     t_s_vect3f unit_direction;
     float t;
@@ -43,9 +43,9 @@ int main(void)
     t_hittable_list *world;
     world = hittable_list ();
 
-    t_sphere sp1 = sphere(s_vec3f (0, 0, 0), 0.5);
+    t_sphere sp1 = sphere(s_vec3f (0, 0, -1), 0.5);
     t_hittable shape1 = hittable (sphere_hit, &sp1, SPHERE);
-    t_sphere sp2 = sphere(s_vec3f (0, 0, 0), 0.5);
+    t_sphere sp2 = sphere(s_vec3f (0, -100.5, -1), 100);
     t_hittable shape2 = hittable (sphere_hit, &sp1, SPHERE);
     hittable_add (world, &shape1);
     //camera (eye) / screen

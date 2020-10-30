@@ -1,12 +1,14 @@
 #include "hittable.h"
 #include "hittable_list.h"
+#include "../generic_arrptr/garrptr.h"
 
+/*
 t_hittable_list *empty_hittable_list(int alloc)
 {
     t_hittable_list *hitt_list;
 
     hitt_list = malloc(sizeof(struct s_hittable_list));
-    hitt_list->data = malloc(alloc * sizeof(t_hittable_list *));
+    hitt_list->data = malloc(alloc * sizeof(t_hittable*));
     hitt_list->len = 0;
     hitt_list->alloc = alloc;
     //hitt_list->add = hittable_add;
@@ -24,15 +26,29 @@ t_hittable_list *hittable_list(void)
     return (hitt_list);
 }
 
+void hlist_grow_size(t_hittable_list *v, int newalloc)
+{
+    void *tmp;
+
+    if ((tmp = malloc(newalloc * sizeof(t_hittable_list))) == NULL)
+        return;
+    ft_memcpy(tmp, v->data, v->alloc * v->data);
+    free(v->data);
+    v->data = tmp;
+    v->alloc = newalloc;
+}
+
 void hittable_add(void *_hittable_list, void *_hittable_ptr)
 {
     t_hittable_list *hittable_list;
     t_hittable *hittable_ptr;
 
-    hittable_list = (t_hittable_list*)_hittable_list;
-    hittable_ptr = (t_hittable*)_hittable_ptr;
+    hittable_list = (t_hittable_list *)_hittable_list;
+    hittable_ptr = (t_hittable *)_hittable_ptr;
     if (hittable_list->len == hittable_list->alloc)
-        return;
+    {
+        
+    }
     hittable_list->data[hittable_list->len] = hittable_ptr;
     hittable_list->len++;
 }
@@ -41,31 +57,32 @@ void hittable_destroy(void *_hittable_list)
 {
     t_hittable_list *hittable_list;
 
-    hittable_list = (t_hittable_list*) _hittable_list;
+    hittable_list = (t_hittable_list *)_hittable_list;
     free(hittable_list->data);
     free(hittable_list);
 }
-
-bool hittable_list_hit(void *self, t_ray *r, float tmin, float tmax, t_hit_record *rec)
+*/
+bool hittable_list_hit(void *_list, t_ray *r, float tmin, float tmax, t_hit_record *rec)
 {
-    t_hittable_list *list;
+    t_arrptr list;
     bool hit_anything;
     float closest_so_far;
     t_hit_record temp_rec;
     int i;
 
     i = 0;
-    list = (t_hittable_list *)self;
+    list = (t_arrptr)_list;
     hit_anything = FALSE;
     closest_so_far = tmax;
 
     while (i < list->len)
     {
-        if (list->data[i]->hit(list->data[i], r, tmin, tmax, rec)) 
+        if (list->data[i]->hit(list->data[i], r, tmin, tmax, rec))
         {
+            list->data[3]
             hit_anything = TRUE;
             closest_so_far = temp_rec.t;
-            hit_record_copy (rec, &temp_rec);
+            hit_record_copy(rec, &temp_rec);
         }
         i++;
     }

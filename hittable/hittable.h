@@ -9,7 +9,6 @@
 # define FALSE 0
 
 
-
 typedef struct s_hit_record t_hit_record;
 struct s_hit_record
 {
@@ -33,7 +32,6 @@ typedef struct s_hittable t_hittable;
 
 struct s_hittable
 {
-    t_hit hit;
     void *shape;
     int type_of_shape;
 };
@@ -51,7 +49,8 @@ struct s_quadatric_equat_sol
     float root2;
 };
 
-t_hittable hittable(t_hit hit, void *shape, int type_of_shape);
+t_hittable *hittable(void *shape, int type_of_shape);
+void hittable_destroy (void *_hittable);
 void set_face_normal(t_ray *r, t_s_vect3f outward_normal, t_hit_record *hr);
 
 #endif

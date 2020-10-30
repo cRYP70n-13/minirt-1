@@ -1,13 +1,21 @@
 #include "hittable.h"
 
-t_hittable hittable(t_hit hit, void *shape, int type_of_shape)
+t_hittable *hittable(void *shape, int type_of_shape)
 {
-    t_hittable h;
+    t_hittable *h;
 
-    h.hit = hit;
-    h.shape = shape;
-    h.type_of_shape = type_of_shape;
+    h = malloc (sizeof(t_hittable));
+    h->shape = shape;
+    h->type_of_shape = type_of_shape;
     return (h);
+}
+
+void hittable_destroy (void *_hittable)
+{
+    t_hittable *hittable;
+
+    hittable = (t_hittable*) _hittable;
+    free(hittable);
 }
 
 
