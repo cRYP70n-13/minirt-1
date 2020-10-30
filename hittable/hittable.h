@@ -34,6 +34,7 @@ struct s_hittable
 {
     void *shape;
     int type_of_shape;
+    t_hit hit;
 };
 
 typedef struct s_quadatric_equat_sol t_quadatric_equat_sol;

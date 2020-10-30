@@ -1,5 +1,5 @@
 #include "hittable.h"
-
+#include "sphere.h"
 t_hittable *hittable(void *shape, int type_of_shape)
 {
     t_hittable *h;
@@ -7,6 +7,8 @@ t_hittable *hittable(void *shape, int type_of_shape)
     h = malloc (sizeof(t_hittable));
     h->shape = shape;
     h->type_of_shape = type_of_shape;
+    if (type_of_shape == SPHERE) //to-do : make an array of function pointers
+        h->hit = sphere_hit;
     return (h);
 }
 

@@ -12,27 +12,15 @@
 //typedef bool (*t_hit_list) (void *self, t_ray *r, float tmin, float tmax, t_hit_record *rec);
 
 
-typedef struct s_hittable_list t_hittable_list;
-
-struct s_hittable_list 
-{
-    t_hittable **data;
-    int len;
-    int alloc;
-	//t_add add;
-	//t_clear clear;
-	//t_clear_fully clear_fully;
-	//t_hit hit;
-};
 
 
+t_arrptr empty_hittable_list (int alloc);
+t_arrptr hittable_list(void);
+
+void hittable_add(t_arrptr _hittable_list, t_hittable *_hittable);
+t_hittable *hittable_get (t_arrptr hittable_list, int index);
 
 
-t_hittable_list *empty_hittable_list (int alloc);
-t_hittable_list *hittable_list(void);
-
-//void hittable_add(void *_hittable_list, void *_hittable_ptr);
-//void hittable_destroy(void *_hittable_list);
 //bool hittable_list_hit(void *self, t_ray *r, float tmin, float tmax, t_hit_record *rec);
 //void hittable_destroy_with_freeing_hittables (void *_hittable_list);
 bool hittable_list_hit(void *list, t_ray *r, float tmin, float tmax, t_hit_record *rec);
