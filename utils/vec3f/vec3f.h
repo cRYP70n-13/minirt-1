@@ -1,5 +1,5 @@
-#ifndef VEC3F_H
-# define VEC3F_H
+#ifndef VECT3F_H
+# define VECT3F_H
 
 # include <math.h>
 
