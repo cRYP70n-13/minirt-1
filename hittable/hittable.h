@@ -1,8 +1,8 @@
 #ifndef HITTABLE_H
 #define HITTABLE_H
 
-# include "../rays/rays.h"
-# include "../vec3f/vec3f.h"
+# include "../objects/rays/rays.h"
+# include "../utils/vec3f/vec3f.h"
 
 # define bool char
 # define TRUE 1

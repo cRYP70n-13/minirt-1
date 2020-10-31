@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "rays/rays.h"
+#include "objects/rays/rays.h"
 #include "vec3f/vec3f.h"
 #include "mlx.h"
 #include "image/image.h"
