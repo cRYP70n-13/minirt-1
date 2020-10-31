@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "objects/rays/rays.h"
-#include "vec3f/vec3f.h"
+#include "./objects/rays/rays.h"
+#include "./utils/vec3f/vec3f.h"
 #include "mlx.h"
 #include "image/image.h"
 #include "hittable/hittable.h"
