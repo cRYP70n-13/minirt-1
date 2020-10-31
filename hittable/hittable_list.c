@@ -46,12 +46,10 @@ bool hittable_list_hit(void *_list, t_ray *r, float tmin, float tmax, t_hit_reco
     list = (t_arrptr)_list;
     hit_anything = FALSE;
     closest_so_far = tmax;
-
     while (i < list->len)
     {
         shape = hittable_get(list, i);
-        //if (list->data[i]->hit(list->data[i], r, tmin, tmax, rec))
-        if (shape->hit(shape->shape, r, tmin, tmax, rec))
+        if (shape->hit(shape->shape, r, tmin, closest_so_far, rec))
         {
             hit_anything = TRUE;
             closest_so_far = temp_rec.t;
