@@ -20,6 +20,7 @@ t_ray *ray(t_vect3f origin, t_vect3f direction)
 	return (r);
 }
 
+
 /**
 *	@function => The ray Destoryer function
 *	@return => Nothing just freeing the damn memo
@@ -31,6 +32,19 @@ void ray_destroy(t_ray *ray)
 	free(ray->result_ray);
 	free(ray);
 }
+
+t_ray s_ray(t_vect3f origin, t_vect3f direction)
+{
+	t_ray r;
+
+	r.origin = vec3f(0, 0, 0, VECTOR);
+	r.direction = vec3f(0, 0, 0, VECTOR);
+	r.result_ray = vec3f(0, 0, 0, VECTOR);
+	vec3f_copy(origin, r.origin);
+	vec3f_copy(direction, r.direction);
+	return (r);
+}
+
 
 /**
  * @description => Return the oerigin of our ray

@@ -1,13 +1,14 @@
 CC = gcc
 LOPTS = -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit
-MCOPTS = -g -I /usr/local/include
+#LOPTS = -lcsfml-graphics -lcsfml-window -lm
+MCOPTS = -I /usr/local/include
 COPTS = -c
 OBJS =  main.o rays.o vec3f.o s_vec3f.o image.o hittable.o hittable_list.o sphere.o garrptr.o
 
 NAME = main
 all:$(NAME)
 $(NAME) : $(OBJS)
-	$(CC) $(MCOPTS) $(OBJS) -g -o $(NAME) $(LOPTS)
+	$(CC) $(MCOPTS) $(OBJS) -o $(NAME) $(LOPTS)
 
 
 
@@ -34,6 +35,9 @@ s_vec3f.o : vec3f/s_vec3f.c
 
 image.o : image/image.c image/image.h
 	$(CC) $(COPTS) image/image.c
+
+#csfml.o : csfml.c csfml.h
+#	$(CC) $(COPTS) csfml.c
 
 garrptr.o : generic_arrptr/garrptr.c generic_arrptr/garrptr.h
 	$(CC) $(COPTS) generic_arrptr/garrptr.c
