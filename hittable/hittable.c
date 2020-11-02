@@ -1,5 +1,6 @@
 #include "hittable.h"
 #include "sphere.h"
+
 t_hittable *hittable(void *shape, int type_of_shape)
 {
     t_hittable *h;

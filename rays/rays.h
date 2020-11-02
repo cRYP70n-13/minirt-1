@@ -1,7 +1,7 @@
 #ifndef RAYS_H
 # define RAYS_H
 
-# include "../utils/vec3f/vec3f.h"
+# include "../vec3f/vec3f.h"
 // # include <stdlib.h>
 // # include <stdio.h>
 
