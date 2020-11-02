@@ -2,8 +2,8 @@
 # define RAYS_H
 
 # include "../vec3f/vec3f.h"
-// # include <stdlib.h>
-// # include <stdio.h>
+# include <stdlib.h>
+# include "../utils/errors/errors.h"
 
 /*
 *  The structure definition of the ray

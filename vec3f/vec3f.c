@@ -1,5 +1,5 @@
 #include "vec3f.h"
-#include "stdio.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 t_vect3f vec3f(float x, float y, float z, char is_point_or_vector)

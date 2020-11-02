@@ -8,6 +8,7 @@
 t_sphere    *new_sphere(float radius, t_vect3f *color, t_vect3f *center)
 {
 	t_sphere    *sphere;
+
 	if (!(sphere = malloc(sizeof(t_sphere))))
 		error_handler(-1);
 	sphere->radius = radius;
