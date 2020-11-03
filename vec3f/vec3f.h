@@ -142,4 +142,6 @@ t_s_vect3f s_vec3f_crossproduct(t_s_vect3f v1, t_s_vect3f v2);
 
 void s_vec3f_copy (t_s_vect3f *src, t_s_vect3f *dst);
 
+t_s_vect3f vec3f_random ();
+
 #endif

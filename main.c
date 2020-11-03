@@ -7,6 +7,7 @@
 #include "hittable/hittable_list.h"
 #include <float.h>
 #include <limits.h>
+#include "camera.h"
 
 unsigned int lfsr113_Bits(void)
 {
@@ -35,8 +36,8 @@ t_s_vect3f ray_color(t_ray *r, t_arrptr world)
         return s_vec3f_multi(s_vec3f_add(rec.normal, s_vec3f(1, 1, 1)), 0.5);
     unit_direction = s_vec3f_norm(*(r->direction));
     t = 0.5 * (unit_direction.y + 1);
-    // result = s_vec3f_add(s_vec3f_multi(s_vec3f(1, 1, 1), (1.0 - t)), s_vec3f_multi(s_vec3f(0.5, 0.7, 1.0), t));
-    result = s_vec3f(0, 0, 0);
+    result = s_vec3f_add(s_vec3f_multi(s_vec3f(1, 1, 1), (1.0 - t)), s_vec3f_multi(s_vec3f(0.5, 0.7, 1.0), t));
+    //result = s_vec3f(0, 0, 0);
     return (result);
 }
 
@@ -48,7 +49,7 @@ int main(void)
 
     //image
     float aspect_ratio = 16.0 / 9.0;
-    int image_width = 400;
+    int image_width = 1500;
     int image_height = (int)image_width / aspect_ratio;
     int samples_per_pixel = 100;
 
@@ -65,25 +66,15 @@ int main(void)
     hittable_add(world, shape2);
 
     //camera (eye) / screen
-
-    float viewport_height = 2.0;
-    float viewport_width = aspect_ratio * viewport_height;
-    float focal_length = 1.0;
-
-    t_s_vect3f origin = s_vec3f(0, 0, 0);
-    t_s_vect3f horizontal = s_vec3f(viewport_width, 0, 0);
-    t_s_vect3f vertical = s_vec3f(0, viewport_height, 0);
-    t_s_vect3f lower_left_corner = s_vec3f_sub(origin, s_vec3f_div(horizontal, 2));
-    lower_left_corner = s_vec3f_sub(lower_left_corner, s_vec3f_div(vertical, 2));
-    lower_left_corner = s_vec3f_sub(lower_left_corner, s_vec3f(0, 0, focal_length));
+    t_camera cam = camera ();
 
     // RENDER
 
     int i;
     int j;
-    //void *mlx_ptr = mlx_init();
-    //void *mlx_window = mlx_new_window(mlx_ptr, image_width, image_height, "first camera");
-    //t_image *img = mlx_create_img(mlx_ptr, image_width, image_height);
+    void *mlx_ptr = mlx_init();
+    void *mlx_window = mlx_new_window(mlx_ptr, image_width, image_height, "first camera");
+    t_image *img = mlx_create_img(mlx_ptr, image_width, image_height);
 
     //j = 0;
     j = image_height - 1;
@@ -102,33 +93,30 @@ int main(void)
             t_s_vect3f pixel_color = s_vec3f(0, 0, 0);
             // u = (float)i / (image_width - 1);
             // v = (float)j / (image_height - 1);
-            for (int k = 0; k < samples_per_pixel; k++)
-           {
-                u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
-                v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
-                // u = ((float)i / (image_width - 1));
-                //v = ((float)j / (image_height - 1));
-                dir = s_vec3f_add(lower_left_corner, s_vec3f_multi(horizontal, u));
-                dir = s_vec3f_add(dir, s_vec3f_multi(vertical, v));
-                dir = s_vec3f_sub(dir, origin);
-                r = s_ray(&origin, &dir);
-                 pixel_color = s_vec3f_add(pixel_color, ray_color(&r, world));
+           // for ( int k = 0; k < samples_per_pixel; k++)
+            {
+             //   u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
+               // v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
+                u = ((float)i / (image_width - 1));
+                v = ((float)j / (image_height - 1));
+                r = get_ray (cam, u, v);
+                pixel_color = s_vec3f_add(pixel_color, ray_color(&r, world));
                 //pixel_color = ray_color (r, world);
-          }
-            pixel_color.x /= 100;
-            pixel_color.y /= 100;
-            pixel_color.z /= 100;
-            //img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color.x * 255), (pixel_color.y * 255), (pixel_color.z * 255)));
+            }
+            // pixel_color.x /= samples_per_pixel;
+            // pixel_color.y /= samples_per_pixel;
+            // pixel_color.z /= samples_per_pixel;
+            img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color.x * 255), (pixel_color.y * 255), (pixel_color.z * 255)));
             i++;
         }
         j_inc++;
         j--;
     }
 
-    //mlx_put_image_to_window(mlx_ptr, mlx_window, img->mlx_img, 0, 0);
-    //mlx_loop(mlx_ptr);
-    //mlx_destroy_window(mlx_ptr, mlx_window);
-   // mlx_img_destroy(img);
-   printf ("wow");
+    mlx_put_image_to_window(mlx_ptr, mlx_window, img->mlx_img, 0, 0);
+    mlx_loop(mlx_ptr);
+    mlx_destroy_window(mlx_ptr, mlx_window);
+    mlx_img_destroy(img);
+    //printf("wow");
     return (0);
 }

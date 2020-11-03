@@ -3,7 +3,7 @@ LOPTS = -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit
 #LOPTS = -lcsfml-graphics -lcsfml-window -lm
 MCOPTS = -I /usr/local/include
 COPTS = -c
-OBJS =  main.o rays.o vec3f.o s_vec3f.o image.o hittable.o hittable_list.o sphere.o garrptr.o
+OBJS =  main.o rays.o vec3f.o s_vec3f.o image.o hittable.o hittable_list.o sphere.o garrptr.o camera.o
 
 NAME = main
 all:$(NAME)
@@ -41,6 +41,10 @@ image.o : image/image.c image/image.h
 
 garrptr.o : generic_arrptr/garrptr.c generic_arrptr/garrptr.h
 	$(CC) $(COPTS) generic_arrptr/garrptr.c
+	
+camera.o : camera.c 
+	$(CC) $(COPTS) camera.c
+	
 
 clean:
 	rm -f $(OBJS)
