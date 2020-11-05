@@ -1,7 +1,7 @@
 #ifndef VECT3F_H
-#define VECT3F_H
+# define VECT3F_H
 
-#include <math.h>
+# include <math.h>
 
 
 /*
@@ -11,10 +11,10 @@ typedef struct s_vect3f *t_vect3f;
 typedef struct s_vect3f t_s_vect3f;
 
 
-#define VECTOR  0
-#define POINT 1
-#define HEAP 0
-#define STACK 1
+# define VECTOR  0
+# define POINT 1
+# define HEAP 0
+# define STACK 1
 
 struct s_vect3f
 {
@@ -96,7 +96,7 @@ t_vect3f    *cpy_vector(t_vect3f *vector);
 **	vec3f constructors in stack
 */ 
 
-t_s_vect3f s_vec3f(float x, float y, float z, char is_point_or_vector);
+t_s_vect3f s_vec3f(float x, float y, float z);
 
 /*
 ** adding two 3 elements vectors
@@ -143,6 +143,6 @@ float s_vec3f_dotproduct(t_s_vect3f v1, t_s_vect3f v2);
 */
 t_s_vect3f s_vec3f_crossproduct(t_s_vect3f v1, t_s_vect3f v2);
 
-void s_vec3f_copy (t_s_vect3f src, t_s_vect3f dst);
+void s_vec3f_copy (t_s_vect3f *src, t_s_vect3f *dst);
 
 #endif

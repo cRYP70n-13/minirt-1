@@ -1,8 +1,8 @@
-#include "../vec3f/vec3f.h"
-
-# ifndef SPHERE_H
+#ifndef SPHERE_H
 # define SPHERE_H
 
+# include "../vec3f/vec3f.h"
+# include "../errors/errors.h"
 /**
  * The class definition of the SPHERE
  * We can represent a sphere by a center and a radius

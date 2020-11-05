@@ -1,57 +1,134 @@
-#include "mlx.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include "canvas.h"
+#include "rays/rays.h"
+#include "vec3f/vec3f.h"
+#include "mlx.h"
+#include "image/image.h"
+#include "hittable/hittable.h"
+#include "hittable/hittable_list.h"
+#include <float.h>
+#include <limits.h>
 
-int main()
+unsigned int lfsr113_Bits(void)
 {
-	void *mlx_ptr;
-	void *mlx_window;
-	t_canvas *c;
-	int i;
-	int j;
+    static unsigned int z1 = 12345, z2 = 12345, z3 = 12345, z4 = 12345;
+    unsigned int b;
+    b = ((z1 << 6) ^ z1) >> 13;
+    z1 = ((z1 & 4294967294U) << 18) ^ b;
+    b = ((z2 << 2) ^ z2) >> 27;
+    z2 = ((z2 & 4294967288U) << 2) ^ b;
+    b = ((z3 << 13) ^ z3) >> 21;
+    z3 = ((z3 & 4294967280U) << 7) ^ b;
+    b = ((z4 << 3) ^ z4) >> 12;
+    z4 = ((z4 & 4294967168U) << 13) ^ b;
+    return (z1 ^ z2 ^ z3 ^ z4);
+}
 
-	mlx_ptr = mlx_init();
-	mlx_window = mlx_new_window(mlx_ptr, 1000, 1000, "first visualalisation");
-	c = canvas_create(1000, 1000, 0);
-	i = 0;
-	j = 0;
+t_s_vect3f ray_color(t_ray *r, t_arrptr world)
+{
+    t_s_vect3f unit_direction;
+    float t;
+    t_s_vect3f result;
+    t_s_vect3f sphere_center;
+    t_hit_record rec;
 
+    if (hittable_list_hit(world, r, 0, FLT_MAX, &rec))
+        return s_vec3f_multi(s_vec3f_add(rec.normal, s_vec3f(1, 1, 1)), 0.5);
+    unit_direction = s_vec3f_norm(*(r->direction));
+    t = 0.5 * (unit_direction.y + 1);
+    // result = s_vec3f_add(s_vec3f_multi(s_vec3f(1, 1, 1), (1.0 - t)), s_vec3f_multi(s_vec3f(0.5, 0.7, 1.0), t));
+    result = s_vec3f(0, 0, 0);
+    return (result);
+}
 
-	while (i < 1000)
-	{
-		j = 0;
-		while (j < 1000)
-		{
-			set_pixel(c, j, i, create_pixel(0, 255.999 * (i/1000.0), 255.99 * (j/1000.0), 0));
-			j++;
-		}
-		i++;
-	}
+int main(void)
+{
 
-	i = 0;
-	while (i < 1000)
-	{
-		j = 0;
-		while (j < 1000)
-		{
-			mlx_pixel_put(mlx_ptr, mlx_window, j, i, canvas_get(c, j, i));
-			j++;
-		}
-		i++;
-	}
+    //random
+    //unsigned int r = lfsr113_Bits();
 
-	//  write_pixel(c, 499, 499, create_trgb(0, 255, 0, 0));
-	//write_pixel(c, 499, 499, create_trgb(0, 255, 0, 0));
-	//mlx_pixel_put(mlx_ptr, mlx_window, 250, 250, canvas_get(c, 250, 250));
-	// mlx_pixel_put(mlx_ptr, mlx_window, 499, 499, canvas_get(c, 499, 499));
-	//write_pixel (c, 100, 100, create_trgb(0, 255, 255, 0));
-	//t_trgb col = canvas_get(c, 100, 100);
-	//printf("%d %d %d %d\n",get_t(col) ,get_r(col), get_g(col), get_b(col));
-	mlx_loop(mlx_ptr);
-	//t_trgb test = create_trgb (, 255, 0, 0);
-	//printf ("%d", get_t(test));
-	mlx_destroy_window(mlx_ptr, mlx_window);
-	canvas_destroy(c);
-	return (0);
+    //image
+    float aspect_ratio = 16.0 / 9.0;
+    int image_width = 400;
+    int image_height = (int)image_width / aspect_ratio;
+    int samples_per_pixel = 100;
+
+    //World
+
+    t_arrptr world;
+    world = hittable_list();
+
+    t_sphere sp1 = sphere(s_vec3f(0, 0, -1), 0.5);
+    t_hittable *shape1 = hittable(&sp1, SPHERE);
+    t_sphere sp2 = sphere(s_vec3f(0, -100.5, -1), 100);
+    t_hittable *shape2 = hittable(&sp2, SPHERE);
+    hittable_add(world, shape1);
+    hittable_add(world, shape2);
+
+    //camera (eye) / screen
+
+    float viewport_height = 2.0;
+    float viewport_width = aspect_ratio * viewport_height;
+    float focal_length = 1.0;
+
+    t_s_vect3f origin = s_vec3f(0, 0, 0);
+    t_s_vect3f horizontal = s_vec3f(viewport_width, 0, 0);
+    t_s_vect3f vertical = s_vec3f(0, viewport_height, 0);
+    t_s_vect3f lower_left_corner = s_vec3f_sub(origin, s_vec3f_div(horizontal, 2));
+    lower_left_corner = s_vec3f_sub(lower_left_corner, s_vec3f_div(vertical, 2));
+    lower_left_corner = s_vec3f_sub(lower_left_corner, s_vec3f(0, 0, focal_length));
+
+    // RENDER
+
+    int i;
+    int j;
+    //void *mlx_ptr = mlx_init();
+    //void *mlx_window = mlx_new_window(mlx_ptr, image_width, image_height, "first camera");
+    //t_image *img = mlx_create_img(mlx_ptr, image_width, image_height);
+
+    //j = 0;
+    j = image_height - 1;
+    //i = image_width;
+    int j_inc = 0;
+    float u;
+    float v;
+    t_ray r;
+
+    while (j >= 0)
+    {
+        i = 0;
+        while (i < image_width)
+        {
+            t_s_vect3f dir;
+            t_s_vect3f pixel_color = s_vec3f(0, 0, 0);
+            // u = (float)i / (image_width - 1);
+            // v = (float)j / (image_height - 1);
+            for (int k = 0; k < samples_per_pixel; k++)
+           {
+                u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
+                v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
+                // u = ((float)i / (image_width - 1));
+                //v = ((float)j / (image_height - 1));
+                dir = s_vec3f_add(lower_left_corner, s_vec3f_multi(horizontal, u));
+                dir = s_vec3f_add(dir, s_vec3f_multi(vertical, v));
+                dir = s_vec3f_sub(dir, origin);
+                r = s_ray(&origin, &dir);
+                 pixel_color = s_vec3f_add(pixel_color, ray_color(&r, world));
+                //pixel_color = ray_color (r, world);
+          }
+            pixel_color.x /= 100;
+            pixel_color.y /= 100;
+            pixel_color.z /= 100;
+            //img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color.x * 255), (pixel_color.y * 255), (pixel_color.z * 255)));
+            i++;
+        }
+        j_inc++;
+        j--;
+    }
+
+    //mlx_put_image_to_window(mlx_ptr, mlx_window, img->mlx_img, 0, 0);
+    //mlx_loop(mlx_ptr);
+    //mlx_destroy_window(mlx_ptr, mlx_window);
+   // mlx_img_destroy(img);
+   printf ("wow");
+    return (0);
 }
