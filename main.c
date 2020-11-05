@@ -44,7 +44,7 @@ int main(void)
 
     //image
     float aspect_ratio = 16.0 / 9.0;
-    int image_width = 1500;
+    int image_width = 800;
     int image_height = (int)image_width / aspect_ratio;
     int samples_per_pixel = 100;
     int max_depth  = 50;
@@ -68,9 +68,9 @@ int main(void)
 
     int i;
     int j;
-    void *mlx_ptr = mlx_init();
-    void *mlx_window = mlx_new_window(mlx_ptr, image_width, image_height, "first camera");
-    t_image *img = mlx_create_img(mlx_ptr, image_width, image_height);
+    // void *mlx_ptr = mlx_init();
+    // void *mlx_window = mlx_new_window(mlx_ptr, image_width, image_height, "first camera");
+    // t_image *img = mlx_create_img(mlx_ptr, image_width, image_height);
 
     //j = 0;
     j = image_height - 1;
@@ -93,26 +93,29 @@ int main(void)
             {
                 //   u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
                 // v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
-                u = ((float)i / (image_width - 1));
-                v = ((float)j / (image_height - 1));
+                // u = ((float)i / (image_width - 1));
+                // v = ((float)j / (image_height - 1));
                 r = get_ray(cam, u, v);
                 pixel_color = s_vec3f_add(pixel_color, ray_color(r, world, max_depth));
                 //pixel_color = ray_color (r, world);
             }
-            // pixel_color.x /= samples_per_pixel;
-            // pixel_color.y /= samples_per_pixel;
-            // pixel_color.z /= samples_per_pixel;
-            img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color.x * 255), (pixel_color.y * 255), (pixel_color.z * 255)));
+             pixel_color.x /= samples_per_pixel;
+            pixel_color.y /= samples_per_pixel;
+            pixel_color.z /= samples_per_pixel;
+             pixel_color.x =  sqrt(pixel_color.x); //gama correction
+            pixel_color.y = sqrt(pixel_color.y); //gama correction
+            pixel_color.z = sqrt(pixel_color.z); //gama correction
+            //img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color.x * 255), (pixel_color.y * 255), (pixel_color.z * 255)));
             i++;
         }
         j_inc++;
         j--;
     }
 
-    mlx_put_image_to_window(mlx_ptr, mlx_window, img->mlx_img, 0, 0);
-    mlx_loop(mlx_ptr);
-    mlx_destroy_window(mlx_ptr, mlx_window);
-    mlx_img_destroy(img);
+    // mlx_put_image_to_window(mlx_ptr, mlx_window, img->mlx_img, 0, 0);
+    // mlx_loop(mlx_ptr);
+    // mlx_destroy_window(mlx_ptr, mlx_window);
+    // mlx_img_destroy(img);
     //printf("wow");
     return (0);
 }
