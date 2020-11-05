@@ -1,9 +1,9 @@
 CC = gcc
 LOPTS = -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit
 #LOPTS = -lcsfml-graphics -lcsfml-window -lm
-MCOPTS = -I /usr/local/include
+MCOPTS = -g -I /usr/local/include
 COPTS = -c
-OBJS =  main.o rays.o vec3f.o s_vec3f.o image.o hittable.o hittable_list.o sphere.o garrptr.o camera.o
+OBJS =  main.o rays.o vec3f.o s_vec3f.o image.o hittable.o hittable_list.o sphere.o garrptr.o camera.o tools.o
 
 NAME = main
 all:$(NAME)
@@ -14,6 +14,9 @@ $(NAME) : $(OBJS)
 
 main.o : main.c 
 	$(CC) $(COPTS) main.c
+
+tools.o : tools.c
+	$(CC) $(COPTS) tools.c
 
 sphere.o : hittable/sphere.c
 	$(CC) $(COPTS) hittable/sphere.c

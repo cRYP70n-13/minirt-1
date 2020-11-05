@@ -9,22 +9,7 @@
 #include <limits.h>
 #include "camera.h"
 
-unsigned int lfsr113_Bits(void)
-{
-    static unsigned int z1 = 12345, z2 = 12345, z3 = 12345, z4 = 12345;
-    unsigned int b;
-    b = ((z1 << 6) ^ z1) >> 13;
-    z1 = ((z1 & 4294967294U) << 18) ^ b;
-    b = ((z2 << 2) ^ z2) >> 27;
-    z2 = ((z2 & 4294967288U) << 2) ^ b;
-    b = ((z3 << 13) ^ z3) >> 21;
-    z3 = ((z3 & 4294967280U) << 7) ^ b;
-    b = ((z4 << 3) ^ z4) >> 12;
-    z4 = ((z4 & 4294967168U) << 13) ^ b;
-    return (z1 ^ z2 ^ z3 ^ z4);
-}
-
-t_s_vect3f ray_color(t_ray *r, t_arrptr world)
+t_s_vect3f ray_color(t_ray r, t_arrptr world, int depth)
 {
     t_s_vect3f unit_direction;
     float t;
@@ -32,9 +17,19 @@ t_s_vect3f ray_color(t_ray *r, t_arrptr world)
     t_s_vect3f sphere_center;
     t_hit_record rec;
 
-    if (hittable_list_hit(world, r, 0, FLT_MAX, &rec))
-        return s_vec3f_multi(s_vec3f_add(rec.normal, s_vec3f(1, 1, 1)), 0.5);
-    unit_direction = s_vec3f_norm(*(r->direction));
+    if (depth <= 0)
+        return (s_vec3f (0, 0, 0));
+
+    if (hittable_list_hit(world, &r, 0, FLT_MAX, &rec))
+    {
+        t_s_vect3f target = s_vec3f_add(rec.p, rec.normal);
+        target = s_vec3f_add(target, random_in_unit_sphere());
+        t_s_vect3f tmp = s_vec3f_sub(target, rec.p);
+        return s_vec3f_multi(ray_color(s_ray(&rec.p, &tmp), world, depth-1), 0.5);
+        //return s_vec3f_multi(s_vec3f_add(rec.normal, s_vec3f(1, 1, 1)), 0.5);
+    }
+    //return s_vec3f_multi(s_vec3f_add(rec.normal, s_vec3f(1, 1, 1)), 0.5);
+    unit_direction = s_vec3f_norm(*(r.direction));
     t = 0.5 * (unit_direction.y + 1);
     result = s_vec3f_add(s_vec3f_multi(s_vec3f(1, 1, 1), (1.0 - t)), s_vec3f_multi(s_vec3f(0.5, 0.7, 1.0), t));
     //result = s_vec3f(0, 0, 0);
@@ -52,6 +47,7 @@ int main(void)
     int image_width = 1500;
     int image_height = (int)image_width / aspect_ratio;
     int samples_per_pixel = 100;
+    int max_depth  = 50;
 
     //World
 
@@ -66,7 +62,7 @@ int main(void)
     hittable_add(world, shape2);
 
     //camera (eye) / screen
-    t_camera cam = camera ();
+    t_camera cam = camera();
 
     // RENDER
 
@@ -93,14 +89,14 @@ int main(void)
             t_s_vect3f pixel_color = s_vec3f(0, 0, 0);
             // u = (float)i / (image_width - 1);
             // v = (float)j / (image_height - 1);
-           // for ( int k = 0; k < samples_per_pixel; k++)
+            // for ( int k = 0; k < samples_per_pixel; k++)
             {
-             //   u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
-               // v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
+                //   u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
+                // v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
                 u = ((float)i / (image_width - 1));
                 v = ((float)j / (image_height - 1));
-                r = get_ray (cam, u, v);
-                pixel_color = s_vec3f_add(pixel_color, ray_color(&r, world));
+                r = get_ray(cam, u, v);
+                pixel_color = s_vec3f_add(pixel_color, ray_color(r, world, max_depth));
                 //pixel_color = ray_color (r, world);
             }
             // pixel_color.x /= samples_per_pixel;

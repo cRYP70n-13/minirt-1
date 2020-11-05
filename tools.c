@@ -14,3 +14,13 @@ unsigned int lfsr113_Bits(void)
     z4 = ((z4 & 4294967168U) << 13) ^ b;
     return (z1 ^ z2 ^ z3 ^ z4);
 }
+
+float genrate_random_number()
+{
+    float rn;
+
+    rn = lfsr113_Bits ();
+    if (lfsr113_Bits () < (UINT_MAX / 2))
+        return ( -1 * ((float)lfsr113_Bits() / UINT_MAX));
+    return ((float)lfsr113_Bits() / UINT_MAX);
+}
