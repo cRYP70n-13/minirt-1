@@ -1,10 +1,10 @@
 CC = gcc
-#LOPTS = -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit
-LOPTS = -lcsfml-graphics -lcsfml-window -lm
+LOPTS = -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit
+#LOPTS = -lcsfml-graphics -lcsfml-window -lm
 MCOPTS = -O3 -O2 -I /usr/local/include
 COPTS = -c
-#OBJS =  main.o rays.o vec3f.o s_vec3f.o image.o hittable.o hittable_list.o sphere.o garrptr.o camera.o tools.o
-OBJS =  main_csfml.o rays.o vec3f.o s_vec3f.o hittable.o hittable_list.o sphere.o garrptr.o camera.o tools.o csfml.o
+OBJS =  main_aaopt.o rays.o vec3f.o s_vec3f.o image.o hittable.o hittable_list.o sphere.o garrptr.o camera.o tools.o
+#OBJS =  main_csfml.o rays.o vec3f.o s_vec3f.o hittable.o hittable_list.o sphere.o garrptr.o camera.o tools.o csfml.o
 
 NAME = main
 all:$(NAME)
@@ -12,11 +12,11 @@ $(NAME) : $(OBJS)
 	$(CC) $(MCOPTS) $(OBJS) -o $(NAME) $(LOPTS)
 
 
-main.o : main.c 
-	$(CC) $(COPTS) main.c
+main_aaopt.o  : main_aaopt.c 
+	$(CC) $(COPTS) main_aaopt.c
 
-main_csfml.o : main_csfml.c 
-	$(CC) $(COPTS) main_csfml.c
+#main_csfml.o : main_csfml.c 
+#	$(CC) $(COPTS) main_csfml.c
 
 tools.o : tools.c
 	$(CC) $(COPTS) tools.c
@@ -39,8 +39,8 @@ vec3f.o : vec3f/vec3f.c
 s_vec3f.o : vec3f/s_vec3f.c
 	$(CC) $(COPTS) vec3f/s_vec3f.c
 
-#image.o : image/image.c image/image.h
-#	$(CC) $(COPTS) image/image.c
+image.o : image/image.c image/image.h
+	$(CC) $(COPTS) image/image.c
 
 csfml.o : csfml.c csfml.h
 	$(CC) $(COPTS) csfml.c

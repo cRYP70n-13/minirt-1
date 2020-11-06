@@ -44,9 +44,9 @@ int main(void)
 
     //image
     float aspect_ratio = 16.0 / 9.0;
-    int image_width = 800;
+    int image_width = 400;
     int image_height = (int)image_width / aspect_ratio;
-    int samples_per_pixel = 10;
+    int samples_per_pixel = 100;
     int max_depth = 50;
 
     //World
@@ -78,7 +78,9 @@ int main(void)
     int j_inc = 0;
     float u;
     float v;
+    float v1;
     t_ray r;
+    t_ray r1;
 
     while (j >= 0)
     {
@@ -87,25 +89,38 @@ int main(void)
         {
             t_s_vect3f dir;
             t_s_vect3f pixel_color = s_vec3f(0, 0, 0);
-            // u = (float)i / (image_width - 1);
-            // v = (float)j / (image_height - 1);
+            t_s_vect3f pixel_color1 = s_vec3f(0, 0, 0);
+            // u = ((float)i / (image_width - 1));
+            // v = ((float)j / (image_height - 1));
             for (int k = 0; k < samples_per_pixel; k++)
             {
-                u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
-                v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
-                // u = ((float)i / (image_width - 1));
-                // v = ((float)j / (image_height - 1));
+            u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
+            v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
+            if (v > 0.5)
+            {
                 r = get_ray(cam, u, v);
                 pixel_color = s_vec3f_add(pixel_color, ray_color(r, world, max_depth));
-                //pixel_color = ray_color (r, world);
+                //img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color.x * 255), (pixel_color.y * 255), (pixel_color.z * 255)));
+            }
+            //second ray
+            if (v <= 0.5)
+            {
+                r1 = get_ray(cam, u, v);
+                pixel_color1 = s_vec3f_add(pixel_color1, ray_color(r1, world, max_depth));
+                //img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color1.x * 255), (pixel_color1.y * 255), (pixel_color1.z * 255)));
+            }
             }
             pixel_color.x /= samples_per_pixel;
             pixel_color.y /= samples_per_pixel;
             pixel_color.z /= samples_per_pixel;
-            pixel_color.x = sqrt(pixel_color.x); //gama correction
-            pixel_color.y = sqrt(pixel_color.y); //gama correction
-            pixel_color.z = sqrt(pixel_color.z); //gama correction
-            img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color.x * 255), (pixel_color.y * 255), (pixel_color.z * 255)));
+            pixel_color1.x /= samples_per_pixel;
+            pixel_color1.y /= samples_per_pixel;
+            pixel_color1.z /= samples_per_pixel;
+            if (v > 0.5)
+                img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color.x * 255), (pixel_color.y * 255), (pixel_color.z * 255)));
+            if (v <= 0.5)
+                img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color1.x * 255), (pixel_color1.y * 255), (pixel_color1.z * 255)));
+
             i++;
         }
         j_inc++;
