@@ -19,7 +19,6 @@ t_s_vect3f ray_color(t_ray r, t_arrptr world, int depth)
 
     if (depth <= 0)
         return (s_vec3f(0, 0, 0));
-
     if (hittable_list_hit(world, &r, 0, FLT_MAX, &rec))
     {
         t_s_vect3f target = s_vec3f_add(rec.p, rec.normal);
@@ -94,21 +93,21 @@ int main(void)
             // v = ((float)j / (image_height - 1));
             for (int k = 0; k < samples_per_pixel; k++)
             {
-            u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
-            v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
-            if (v > 0.5)
-            {
-                r = get_ray(cam, u, v);
-                pixel_color = s_vec3f_add(pixel_color, ray_color(r, world, max_depth));
-                //img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color.x * 255), (pixel_color.y * 255), (pixel_color.z * 255)));
-            }
-            //second ray
-            if (v <= 0.5)
-            {
-                r1 = get_ray(cam, u, v);
-                pixel_color1 = s_vec3f_add(pixel_color1, ray_color(r1, world, max_depth));
-                //img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color1.x * 255), (pixel_color1.y * 255), (pixel_color1.z * 255)));
-            }
+                u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
+                v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
+                if (v > 0.5)
+                {
+                    r = get_ray(cam, u, v);
+                    pixel_color = s_vec3f_add(pixel_color, ray_color(r, world, max_depth));
+                    //img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color.x * 255), (pixel_color.y * 255), (pixel_color.z * 255)));
+                }
+                //second ray
+                if (v <= 0.5)
+                {
+                    r1 = get_ray(cam, u, v);
+                    pixel_color1 = s_vec3f_add(pixel_color1, ray_color(r1, world, max_depth));
+                    //img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color1.x * 255), (pixel_color1.y * 255), (pixel_color1.z * 255)));
+                }
             }
             pixel_color.x /= samples_per_pixel;
             pixel_color.y /= samples_per_pixel;
