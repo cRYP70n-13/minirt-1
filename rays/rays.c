@@ -10,13 +10,8 @@ t_ray *ray(t_vect3f origin, t_vect3f direction)
 {
 	t_ray *r;
 
-<<<<<<< HEAD
-	if (!(r = malloc(sizeof(struct s_ray)))
-		return NULL;
-=======
 	if (!(r = malloc(sizeof(struct s_ray))))
 		error_handler(-1);
->>>>>>> 8a7ba126a01e18c67c83c749e0334797ae767b96
 	r->origin = vec3f(0, 0, 0, VECTOR);
 	r->direction = vec3f(0, 0, 0, VECTOR);
 	r->result_ray = vec3f(0, 0, 0, VECTOR);

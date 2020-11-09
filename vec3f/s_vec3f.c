@@ -72,7 +72,6 @@ float s_vec3f_mag(t_s_vect3f vec)
 
     m = 0;
     m = sqrt(pow(vec.x, 2) + pow(vec.y, 2) + pow(vec.z, 2));
-
     return (m);
 }
 
@@ -110,4 +109,22 @@ void s_vec3f_copy (t_s_vect3f *src, t_s_vect3f *dst)
     dst->x = src->x;
     dst->y = src->y;
     dst->z = src->z;
+}
+
+t_s_vect3f s_vec3f_random ()
+{
+    return (s_vec3f(genrate_random_number(), genrate_random_number(), genrate_random_number()));
+}
+
+t_s_vect3f random_in_unit_sphere ()
+{
+    while (1)
+    {
+        t_s_vect3f p;
+
+        p = s_vec3f_random();
+        if (s_vec3f_mag(p) >= 1)
+            continue;
+        return (p);
+    }
 }

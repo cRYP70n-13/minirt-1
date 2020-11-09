@@ -1,11 +1,8 @@
 #ifndef VECT3F_H
 # define VECT3F_H
 
-# include <math.h>
-
 
 /*
-** an implementiation of a 3 elements floats vector [x. y. z]
 */
 typedef struct s_vect3f *t_vect3f;
 typedef struct s_vect3f t_s_vect3f;
@@ -145,4 +142,15 @@ t_s_vect3f s_vec3f_crossproduct(t_s_vect3f v1, t_s_vect3f v2);
 
 void s_vec3f_copy (t_s_vect3f *src, t_s_vect3f *dst);
 
+
+/*
+** generate a random point in the unit cube centered at the origin (0, 0, 0)
+*/
+t_s_vect3f s_vec3f_random ();
+
+
+/*
+** generate a random point in the unit sphere centered at the origin (0, 0, 0)
+*/
+t_s_vect3f random_in_unit_sphere ();
 #endif

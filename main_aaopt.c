@@ -19,7 +19,6 @@ t_s_vect3f ray_color(t_ray r, t_arrptr world, int depth)
 
     if (depth <= 0)
         return (s_vec3f(0, 0, 0));
-
     if (hittable_list_hit(world, &r, 0, FLT_MAX, &rec))
     {
         t_s_vect3f target = s_vec3f_add(rec.p, rec.normal);
@@ -64,14 +63,11 @@ int main(void)
     //camera (eye) / screen
     t_camera cam = camera();
 
-
-    
     // RENDER
 
     int i;
     int j;
     void *mlx_ptr = mlx_init();
-
     void *mlx_window = mlx_new_window(mlx_ptr, image_width, image_height, "first camera");
     t_image *img = mlx_create_img(mlx_ptr, image_width, image_height);
 
@@ -81,11 +77,9 @@ int main(void)
     int j_inc = 0;
     float u;
     float v;
-    t_ray r0;
+    float v1;
+    t_ray r;
     t_ray r1;
-    t_ray r2;
-    t_ray r3;
-
 
     while (j >= 0)
     {
@@ -93,33 +87,46 @@ int main(void)
         while (i < image_width)
         {
             t_s_vect3f dir;
-            t_s_vect3f pixel_color0 = s_vec3f(0, 0, 0);
+            t_s_vect3f pixel_color = s_vec3f(0, 0, 0);
             t_s_vect3f pixel_color1 = s_vec3f(0, 0, 0);
-            t_s_vect3f pixel_color2 = s_vec3f(0, 0, 0);
-            t_s_vect3f pixel_color3 = s_vec3f(0, 0, 0);
-            // u = (float)i / (image_width - 1);
-            // v = (float)j / (image_height - 1);
+            // u = ((float)i / (image_width - 1));
+            // v = ((float)j / (image_height - 1));
             for (int k = 0; k < samples_per_pixel; k++)
             {
                 u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
                 v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
-                // u = ((float)i / (image_width - 1));
-                // v = ((float)j / (image_height - 1));
-                r0 = get_ray(cam, u, v);
-                pixel_color0 = s_vec3f_add(pixel_color0, ray_color(r0, world, max_depth));
+                if (v > 0.5)
+                {
+                    r = get_ray(cam, u, v);
+                    pixel_color = s_vec3f_add(pixel_color, ray_color(r, world, max_depth));
+                    //img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color.x * 255), (pixel_color.y * 255), (pixel_color.z * 255)));
+                }
+                //second ray
+                if (v <= 0.5)
+                {
+                    r1 = get_ray(cam, u, v);
+                    pixel_color1 = s_vec3f_add(pixel_color1, ray_color(r1, world, max_depth));
+                    //img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color1.x * 255), (pixel_color1.y * 255), (pixel_color1.z * 255)));
+                }
             }
-            pixel_color0.x /= samples_per_pixel;
-            pixel_color0.y /= samples_per_pixel;
-            pixel_color0.z /= samples_per_pixel;
-            img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color0.x * 255), (pixel_color0.y * 255), (pixel_color0.z * 255)));
+            pixel_color.x /= samples_per_pixel;
+            pixel_color.y /= samples_per_pixel;
+            pixel_color.z /= samples_per_pixel;
+            pixel_color1.x /= samples_per_pixel;
+            pixel_color1.y /= samples_per_pixel;
+            pixel_color1.z /= samples_per_pixel;
+            if (v > 0.5)
+                img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color.x * 255), (pixel_color.y * 255), (pixel_color.z * 255)));
+            if (v <= 0.5)
+                img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color1.x * 255), (pixel_color1.y * 255), (pixel_color1.z * 255)));
+
             i++;
         }
         j_inc++;
         j--;
     }
 
-    
-    mlx_put_image_to_window(mlx_ptr, mlx_window, img , 0, 0);
+    mlx_put_image_to_window(mlx_ptr, mlx_window, img->mlx_img, 0, 0);
     mlx_loop(mlx_ptr);
     mlx_destroy_window(mlx_ptr, mlx_window);
     mlx_img_destroy(img);
