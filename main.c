@@ -8,6 +8,7 @@
 #include <float.h>
 #include <limits.h>
 #include "camera.h"
+#include "bmp.h"
 
 t_s_vect3f ray_color(t_ray r, t_arrptr world, int depth)
 {
@@ -36,6 +37,7 @@ t_s_vect3f ray_color(t_ray r, t_arrptr world, int depth)
     return (result);
 }
 
+/*
 int main(void)
 {
 
@@ -64,14 +66,11 @@ int main(void)
     //camera (eye) / screen
     t_camera cam = camera();
 
-
-    
     // RENDER
 
     int i;
     int j;
     void *mlx_ptr = mlx_init();
-
     void *mlx_window = mlx_new_window(mlx_ptr, image_width, image_height, "first camera");
     t_image *img = mlx_create_img(mlx_ptr, image_width, image_height);
 
@@ -86,7 +85,6 @@ int main(void)
     t_ray r2;
     t_ray r3;
 
-
     while (j >= 0)
     {
         i = 0;
@@ -94,35 +92,49 @@ int main(void)
         {
             t_s_vect3f dir;
             t_s_vect3f pixel_color0 = s_vec3f(0, 0, 0);
-            t_s_vect3f pixel_color1 = s_vec3f(0, 0, 0);
-            t_s_vect3f pixel_color2 = s_vec3f(0, 0, 0);
-            t_s_vect3f pixel_color3 = s_vec3f(0, 0, 0);
+            // t_s_vect3f pixel_color1 = s_vec3f(0, 0, 0);
+            // t_s_vect3f pixel_color2 = s_vec3f(0, 0, 0);
+            // t_s_vect3f pixel_color3 = s_vec3f(0, 0, 0);
             // u = (float)i / (image_width - 1);
             // v = (float)j / (image_height - 1);
-            for (int k = 0; k < samples_per_pixel; k++)
-            {
-                u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
-                v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
-                // u = ((float)i / (image_width - 1));
-                // v = ((float)j / (image_height - 1));
-                r0 = get_ray(cam, u, v);
-                pixel_color0 = s_vec3f_add(pixel_color0, ray_color(r0, world, max_depth));
-            }
-            pixel_color0.x /= samples_per_pixel;
-            pixel_color0.y /= samples_per_pixel;
-            pixel_color0.z /= samples_per_pixel;
+            // for (int k = 0; k < samples_per_pixel; k++)
+            // {
+            // u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
+            // v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
+            u = ((float)i / (image_width - 1));
+            v = ((float)j / (image_height - 1));
+            r0 = get_ray(cam, u, v);
+            pixel_color0 = s_vec3f_add(pixel_color0, ray_color(r0, world, max_depth));
+            // }
+            // pixel_color0.x /= samples_per_pixel;
+            // pixel_color0.y /= samples_per_pixel;
+            // pixel_color0.z /= samples_per_pixel;
             img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color0.x * 255), (pixel_color0.y * 255), (pixel_color0.z * 255)));
+            // img_set_pixel(img, i, j_inc, create_pixel(0, (255), (0), (0)));
             i++;
         }
         j_inc++;
         j--;
     }
-
-    
-    mlx_put_image_to_window(mlx_ptr, mlx_window, img , 0, 0);
+    mlx_put_image_to_window(mlx_ptr, mlx_window, img->mlx_img, 0, 0);
     mlx_loop(mlx_ptr);
     mlx_destroy_window(mlx_ptr, mlx_window);
     mlx_img_destroy(img);
-    //printf("wow");
+    printf("wow");
+    return (0);
+}
+*/
+
+int main()
+{
+
+    int width = 1;
+    int height = 1;
+    t_bmp bitmap = create_pixels_array(width, height);
+    // set_bmp_pixel(&bitmap, 0, 0, create_pixel(0, 255, 0, 0));
+    // bitmap.pixels[]
+    // set_bmp_pixel(&bitmap, 1, 2, create_pixel(0, 255, 0, 0));
+
+    write_bmp1("poooo.bmp", 4, width);
     return (0);
 }
