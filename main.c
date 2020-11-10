@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "rays/rays.h"
 #include "vec3f/vec3f.h"
-#include "mlx.h"
-#include "image/image.h"
+//#include "mlx.h"
+//#include "image/image.h"
 #include "hittable/hittable.h"
 #include "hittable/hittable_list.h"
 #include <float.h>
@@ -10,6 +10,7 @@
 #include "camera.h"
 #include "bmp.h"
 
+/*
 t_s_vect3f ray_color(t_ray r, t_arrptr world, int depth)
 {
     t_s_vect3f unit_direction;
@@ -36,6 +37,7 @@ t_s_vect3f ray_color(t_ray r, t_arrptr world, int depth)
     //result = s_vec3f(0, 0, 0);
     return (result);
 }
+*/
 
 /*
 int main(void)
@@ -128,13 +130,13 @@ int main(void)
 int main()
 {
 
-    int width = 1;
-    int height = 1;
+    int width = 400;
+    int height = 400;
     t_bmp bitmap = create_pixels_array(width, height);
     // set_bmp_pixel(&bitmap, 0, 0, create_pixel(0, 255, 0, 0));
     // bitmap.pixels[]
     // set_bmp_pixel(&bitmap, 1, 2, create_pixel(0, 255, 0, 0));
 
-    write_bmp1("poooo.bmp", 4, width);
+    write_bmp1("poooo.bmp", width * height * 3, width);
     return (0);
 }

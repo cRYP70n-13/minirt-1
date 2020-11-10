@@ -2,6 +2,35 @@
 #include "bmp.h"
 #include <string.h>
 
+t_trgb  create_pixel(int t, int r, int g, int b)
+{
+	return (t << 24 | (r << 16) | (g << 8) | b);
+}
+
+/*
+**  getting transparency, red, green, blue out of t_trgb 
+*/
+int	get_t (int t_trgb)
+{
+	return (t_trgb >> 24);
+}
+
+int	get_r(int t_trgb)
+{
+	return (t_trgb >> 16);
+}
+
+int	get_g(int t_trgb)
+{
+	return (t_trgb >> 8 & 0xff);
+}
+
+int	get_b(int t_trgb)
+{
+	return (t_trgb & 0xFF);
+}
+
+
 // Function to round an int to a multiple of 4
 int round4(int x)
 {
