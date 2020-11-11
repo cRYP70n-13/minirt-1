@@ -8,16 +8,6 @@
 #include <stdint.h>
 #include "image/image.h"
 
-
-typedef unsigned int t_imgcmp;
-typedef unsigned int t_trgb;
-
-t_trgb create_pixel(int t, int r, int g, int b);
-int get_t(int t_trgb);
-int get_r(int t_trgb);
-int get_g(int t_trgb);
-int get_b(int t_trgb);
-
 typedef struct s_bmp t_bmp;
 
 struct s_bmp
@@ -28,7 +18,7 @@ struct s_bmp
     int bitmap_size;
     char *pixels;
 };
-void write_bmp(char *filename, t_bmp rgb, int width, int height);
+void write_bmp(char *filename, t_bmp *rgb);
 
 
 t_bmp create_pixels_array (int width, int height);

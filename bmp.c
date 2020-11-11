@@ -2,66 +2,29 @@
 #include "bmp.h"
 #include <string.h>
 
-t_trgb  create_pixel(int t, int r, int g, int b)
-{
-	return (t << 24 | (r << 16) | (g << 8) | b);
-}
-
-/*
-**  getting transparency, red, green, blue out of t_trgb 
-*/
-int	get_t (int t_trgb)
-{
-	return (t_trgb >> 24);
-}
-
-int	get_r(int t_trgb)
-{
-	return (t_trgb >> 16);
-}
-
-int	get_g(int t_trgb)
-{
-	return (t_trgb >> 8 & 0xff);
-}
-
-int	get_b(int t_trgb)
-{
-	return (t_trgb & 0xFF);
-}
-
-
 // Function to round an int to a multiple of 4
 int round4(int x)
 {
     return x % 4 == 0 ? x : x - x % 4 + 4;
 }
 
-void write_bmp(char *filename, t_bmp rgb, int width, int height)
+void write_bmp(char *filename, t_bmp *rgb)
 {
-    // Pad the width of the destination to a multiple of 4
-    int padded_width = round4(width * 3);
-
-    char tag[] = {'B', 'M'};
+    char tag[2];
     int header[] = {
-        0, 0, 0x36, 0x28, width, height, 0x180001,
+        0, 0, 0x36, 0x28, rgb->width, rgb->height, 0x180001,
         0, 0, 0, 0, 0, 0};
-    char *bitmap = (char *)rgb.pixels;
-    // char bitmap[] = {
-    // 255, // Blue
-    // 0,   // Green
-    // 0,   // Red
-    // 0};
+    header[0] = sizeof(tag) + sizeof(header) + rgb->bitmap_size;
+    int fd;
 
-    int fd = open(filename, O_CREAT | O_WRONLY, S_IRWXU);
+
+    tag[0] = 'B';
+    tag[1] = 'M';
+    header[0] = sizeof(tag) + sizeof(header) + rgb->bitmap_size;
+    fd = open(filename, O_CREAT | O_WRONLY, S_IRWXU);
     write(fd, &tag, sizeof(tag));
     write(fd, &header, sizeof(header));
-    write(fd, rgb.pixels, rgb.bitmap_size);
-    printf("%lu", rgb.bitmap_size);
-    // write(fd, &nz, 1);
-    // write(fd, &nz, 1);
-    // write(fd, &nz, 1);
-
+    write(fd, rgb->pixels, rgb->bitmap_size);
     close(fd);
 }
 
@@ -89,51 +52,16 @@ void set_bmp_pixel(t_bmp *bmp, int x, int y, t_trgb value)
     t_imgcmp g;
     t_imgcmp r;
     uint32_t *tar;
+    int yr;
 
     b = get_b(value);
     g = get_g(value);
     r = get_r(value);
-    bmp->pixels[y + bmp->padded_width + x * 3 + 0] = b;
-    bmp->pixels[y + bmp->padded_width + x * 3 + 1] = g;
-    bmp->pixels[y + bmp->padded_width + x * 3 + 2] = r;
-}
-
-void write_bmp1(char *filename, int length, int width) {
-    int height = (length / 3) / width;
-
-    // Pad the width of the destination to a multiple of 4
-    int padded_width = round4(width * 3);
-    
-    int bitmap_size = height * padded_width * 3;
-    char *bitmap = (char *) malloc(bitmap_size * sizeof(char));
-    for (int i = 0; i < bitmap_size; i++) bitmap[i] = 0;
-
-    // For each pixel in the RGB image...
-    for (int row = 0; row < height; row++) {
-        for (int col = 0; col < width; col++) {
-            
-            // For R, G, and B...
-            for (int color = 0; color < 3; color++) {
-
-                // Get the index of the destination image
-                int index = row * padded_width + col * 3 + color;
-
-                // Set the destination to the value of the src at row, col.
-                bitmap[index] = 255;
-            }
-        }
-    }
-
-    char tag[] = { 'B', 'M' };
-    int header[] = {
-        0, 0, 0x36, 0x28, width, height, 0x180001, 
-        0, 0, 0x002e23, 0x002e23, 0, 0
-    };
-    header[0] = sizeof(tag) + sizeof(header) + bitmap_size;
-    FILE *fp = fopen(filename, "w+");
-    fwrite(&tag, sizeof(tag), 1, fp);
-    fwrite(&header, sizeof(header), 1, fp);
-    fwrite(bitmap, bitmap_size * sizeof(char), 1, fp);
-    fclose(fp);
-    free(bitmap);
+    yr = -y;
+    int index = y * bmp->padded_width + x * 3 + 0;
+    bmp->pixels[index] = (char)b;
+    index = y * bmp->padded_width + x * 3 + 1;
+    bmp->pixels[index] = (char)g;
+    index = y * bmp->padded_width + x * 3 + 2;
+    bmp->pixels[index] = (char)r;
 }
