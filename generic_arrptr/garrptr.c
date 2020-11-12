@@ -65,7 +65,7 @@ void arrptr_set(t_arrptr a, int index, void *obj)
     if (index >= a->len)
         a->len = index + 1;
 
-    a->data[index] = obj; 
+    a->data[index] = obj;
 }
 
 void arrptr_add(t_arrptr a, void *obj)
