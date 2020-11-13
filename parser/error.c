@@ -6,7 +6,7 @@
 /*   By: pguthaus <pguthaus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 00:44:34 by pguthaus          #+#    #+#             */
-/*   Updated: 2020/05/11 15:38:51 by pguthaus         ###   ########.fr       */
+/*   Updated: 2020/11/13 20:26:04 by okimdil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static char	tab_to_space(unsigned int i, char c)
 {
-	(void)i;
+	(void)i; // The position of the tab
 	if (c == '\t')
 		return (' ');
 	return (c);
