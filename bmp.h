@@ -18,7 +18,7 @@ struct s_bmp
     int bitmap_size;
     char *pixels;
 };
-void write_bmp(char *filename, t_bmp rgb, int width, int height);
+void write_bmp(char *filename, t_bmp *rgb);
 
 
 t_bmp create_pixels_array (int width, int height);

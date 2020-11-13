@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "rays/rays.h"
 #include "vec3f/vec3f.h"
-#include "mlx.h"
-#include "image/image.h"
+//#include "mlx.h"
+//#include "image/image.h"
 #include "hittable/hittable.h"
 #include "hittable/hittable_list.h"
 #include <float.h>
@@ -37,7 +37,7 @@ t_s_vect3f ray_color(t_ray r, t_arrptr world, int depth)
     return (result);
 }
 
-/*
+
 int main(void)
 {
 
@@ -70,9 +70,10 @@ int main(void)
 
     int i;
     int j;
-    void *mlx_ptr = mlx_init();
-    void *mlx_window = mlx_new_window(mlx_ptr, image_width, image_height, "first camera");
-    t_image *img = mlx_create_img(mlx_ptr, image_width, image_height);
+    //void *mlx_ptr = mlx_init();
+    //void *mlx_window = mlx_new_window(mlx_ptr, image_width, image_height, "first camera");
+    //t_image *img = mlx_create_img(mlx_ptr, image_width, image_height);
+    t_bmp bitmap = create_pixels_array (image_width, image_height);
 
     //j = 0;
     j = image_height - 1;
@@ -97,44 +98,78 @@ int main(void)
             // t_s_vect3f pixel_color3 = s_vec3f(0, 0, 0);
             // u = (float)i / (image_width - 1);
             // v = (float)j / (image_height - 1);
-            // for (int k = 0; k < samples_per_pixel; k++)
-            // {
-            // u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
-            // v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
-            u = ((float)i / (image_width - 1));
-            v = ((float)j / (image_height - 1));
+            for (int k = 0; k < samples_per_pixel; k++)
+            {
+            u = ((float)i + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_width - 1);
+            v = ((float)j + ((float)lfsr113_Bits() / UINT32_MAX)) / (image_height - 1);
+            //u = ((float)i / (image_width - 1));
+            //v = ((float)j / (image_height - 1));
             r0 = get_ray(cam, u, v);
             pixel_color0 = s_vec3f_add(pixel_color0, ray_color(r0, world, max_depth));
-            // }
-            // pixel_color0.x /= samples_per_pixel;
-            // pixel_color0.y /= samples_per_pixel;
-            // pixel_color0.z /= samples_per_pixel;
-            img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color0.x * 255), (pixel_color0.y * 255), (pixel_color0.z * 255)));
+            }
+            pixel_color0.x /= samples_per_pixel;
+            pixel_color0.y /= samples_per_pixel;
+            pixel_color0.z /= samples_per_pixel;
+            pixel_color0.x /= samples_per_pixel;
+            pixel_color0.y /= samples_per_pixel;
+            pixel_color0.z /= samples_per_pixel;
+            //img_set_pixel(img, i, j_inc, create_pixel(0, (pixel_color0.x * 255), (pixel_color0.y * 255), (pixel_color0.z * 255)));
             // img_set_pixel(img, i, j_inc, create_pixel(0, (255), (0), (0)));
+            set_bmp_pixel (&bitmap, i, j, create_pixel(0, (pixel_color0.x * 255), (pixel_color0.y * 255), (pixel_color0.z * 255)));
             i++;
         }
         j_inc++;
         j--;
     }
-    mlx_put_image_to_window(mlx_ptr, mlx_window, img->mlx_img, 0, 0);
-    mlx_loop(mlx_ptr);
-    mlx_destroy_window(mlx_ptr, mlx_window);
-    mlx_img_destroy(img);
+    write_bmp ("grrrrrr.bmp", &bitmap);
+   // mlx_put_image_to_window(mlx_ptr, mlx_window, img->mlx_img, 0, 0);
+   // mlx_loop(mlx_ptr);
+   // mlx_destroy_window(mlx_ptr, mlx_window);
+    //mlx_img_destroy(img);
     printf("wow");
     return (0);
 }
-*/
 
+/*
 int main()
 {
 
-    int width = 1;
-    int height = 1;
+    int width = 10;
+    int height = 10;
     t_bmp bitmap = create_pixels_array(width, height);
-    // set_bmp_pixel(&bitmap, 0, 0, create_pixel(0, 255, 0, 0));
-    // bitmap.pixels[]
-    // set_bmp_pixel(&bitmap, 1, 2, create_pixel(0, 255, 0, 0));
 
-    write_bmp1("poooo.bmp", 4, width);
+    int index = 0 * bitmap.padded_width + 1 * 3 + 0;
+    // Set the destination to the value of the src at row, col.
+    bitmap.pixels[index] = (char)0;
+    index = 0 * bitmap.padded_width + 2 * 3 + 1;
+    bitmap.pixels[index] = (char)255;
+    index = 0 * bitmap.padded_width + 3 * 3 + 2;
+    bitmap.pixels[index] = (char)0;
+
+    for (int row = 0; row < bitmap.height; row++)
+    {
+        for (int col = 0; col < bitmap.width; col++)
+        {
+
+            // Get the index of the destination image
+            int index = row * bitmap.padded_width + col * 3 + 0;
+            // Set the destination to the value of the src at row, col.
+            bitmap.pixels[index] = (char)255;
+            index = row * bitmap.padded_width + col * 3 + 1;
+            bitmap.pixels[index] = (char)0;
+            index = row * bitmap.padded_width + col * 3 + 2;
+            bitmap.pixels[index] = (char)255;
+        }
+    }
+    index = 5 * bitmap.padded_width + 1 * 3 + 0;
+    bitmap.pixels[index] = (char)255;
+    index = 5 * bitmap.padded_width + 1 * 3 + 1;
+    bitmap.pixels[index] = (char)255;
+    index = 5 * bitmap.padded_width + 1 * 3 + 2;
+    bitmap.pixels[index] = (char)0;
+    set_bmp_pixel(&bitmap, 0, 0, create_pixel(0, 0, 255, 255));
+
+    write_bmp("poooo.bmp", &bitmap);
     return (0);
 }
+*/
